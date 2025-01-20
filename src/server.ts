@@ -4,18 +4,23 @@ import { sequelize } from './database'; // Sequelize configuration
 import routes from './routes'; // Define API routes
 import db from './models'; //
 import cors from 'cors';
-db
-
+import path from 'path';
 
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
 app.use(cors());
-
+app.use(express.json());
 app.use(bodyParser.json());
 
 app.use('/api', routes);
+
+const angularPath = path.join(__dirname, '../ui/dist/ui/browser');
+app.use(express.static(angularPath));
+
+app.get('*', (req: Request, res: Response) => {
+  res.sendFile(path.join(angularPath, 'index.html'));
+});
 
 app.listen(PORT, async () => {
   try {
