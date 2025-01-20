@@ -1,0 +1,82 @@
+<div>  
+  <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5 bg-gray-800 rounded-md">
+    <div class="md:col-span-2 py-1 text-center text-white font-medium">
+      <label for="" class="px-2 "> <i class="fa-solid fa-filter mx-4"></i> Filter by Date</label>
+    </div>
+    <div class="md:col-span-3">
+      <input
+      class="appearance-none block w-full px-7 text-center bg-white text-gray-700 border border-gray-300 rounded-md py-1.5 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+      type="text"
+      ngxDaterangepickerMd
+      [(ngModel)]="selected"
+      [autoApply]="true"
+      [alwaysShowCalendars]="true"
+      [showCustomRangeLabel]="true"
+      [ranges]="ranges"
+      [linkedCalendars]="true"
+      [keepCalendarOpeningWithRange]="true"
+      (datesUpdated)="chosenDate()"
+    />
+    </div>
+  </div>
+
+
+
+    <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3" *ngIf="storeSummary">
+      <div class="relative overflow-hidden rounded-lg bg-gray-600 px-4  pt-5 shadow sm:px-6 sm:pt-6">
+        <dt>
+          <div class="absolute rounded-md bg-red-600 p-3">
+            <svg class="h-6 w-6 text-gray-900" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+            </svg>
+          </div>
+          <p class="ml-16 truncate text-sm font-medium text-gray-300">Total Items</p>
+        </dt>
+        <dd class="ml-16 flex items-baseline pb-6 sm:pb-7" *ngIf="storeSummary.totalQuantities">
+          <p class="text-2xl font-semibold text-gray-100">{{addCommasToNumber(storeSummary.totalQuantities)}} pcs</p>
+        </dd>
+      </div>
+      <div class="relative overflow-hidden rounded-lg bg-gray-600 px-4  pt-5 shadow sm:px-6 sm:pt-6">
+        <dt>
+          <div class="absolute rounded-md bg-orange-500 p-3">
+            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 9v.906a2.25 2.25 0 01-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 001.183 1.981l6.478 3.488m8.839 2.51l-4.66-2.51m0 0l-1.023-.55a2.25 2.25 0 00-2.134 0l-1.022.55m0 0l-4.661 2.51m16.5 1.615a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V8.844a2.25 2.25 0 011.183-1.98l7.5-4.04a2.25 2.25 0 012.134 0l7.5 4.04a2.25 2.25 0 011.183 1.98V19.5z" />
+            </svg>
+          </div>
+          <p class="ml-16 truncate text-sm font-medium text-gray-300">Stock Worth - GH₵</p>
+        </dt>
+        <dd class="ml-16 flex items-baseline pb-6 sm:pb-7" *ngIf="storeSummary.stockWorth">
+          <p class="text-2xl font-semibold text-gray-100">{{addCommasToNumber(storeSummary.stockWorth.toFixed(2))}}</p>
+        </dd>
+      </div>
+      <div class="relative overflow-hidden rounded-lg bg-gray-600 px-4  pt-5 shadow sm:px-6 sm:pt-6">
+        <dt>
+          <div class="absolute rounded-md bg-blue-500 p-3">
+            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25V4.5m5.834.166l-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243l-1.59-1.59" />
+            </svg>
+          </div>
+          <p class="ml-16 truncate text-sm font-medium text-gray-300">Invoice Returns -  GH₵</p>
+        </dt>
+        <dd class="ml-16 flex items-baseline pb-6 sm:pb-7" *ngIf="storeSummary.invoiceReturns">
+          <p class="text-2xl font-semibold text-gray-100">{{addCommasToNumber(storeSummary.invoiceReturns.toFixed(2))}}</p>
+        </dd>
+      </div>
+    </dl>
+
+    <div id="chart" class="mt-6 shadow-lg p-6 bg-slate-100 rounded-md">
+        <apx-chart
+          *ngIf="chartOptions.xaxis?.categories.length > 0"
+          [series]="chartOptions!.series!"
+          [chart]="chartOptions.chart!"
+          [dataLabels]="chartOptions.dataLabels!"
+          [plotOptions]="chartOptions.plotOptions!"
+          [yaxis]="chartOptions.yaxis!"
+          [legend]="chartOptions.legend!"
+          [fill]="chartOptions.fill!"
+          [stroke]="chartOptions.stroke!"
+          [tooltip]="chartOptions.tooltip!"
+          [xaxis]="chartOptions.xaxis!"
+        ></apx-chart>
+      </div>
+  </div>

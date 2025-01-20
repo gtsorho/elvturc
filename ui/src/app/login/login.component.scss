@@ -1,0 +1,17 @@
+/* Autofill styling */
+input:-webkit-autofill {
+    // Light mode styles
+    -webkit-box-shadow: 0 0 0px 1000px white inset; // Light background
+    box-shadow: 0 0 0px 1000px white inset;
+    -webkit-text-fill-color: #000; // Black text for light mode
+    transition: background-color 5000s ease-in-out 0s;
+  }
+  
+  .dark body {
+    input:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0px 1000px #1a202c inset; // Dark background
+      box-shadow: 0 0 0px 1000px #1a202c inset;
+      -webkit-text-fill-color: #fff !important // White text for dark mode
+    }
+  }
+  

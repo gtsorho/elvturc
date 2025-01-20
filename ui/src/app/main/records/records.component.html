@@ -1,0 +1,66 @@
+<section class="relative h-[6in] flex flex-col justify-center  overflow-auto">
+    <div class="w-full max-w-6xl mx-auto">
+        <div class="flex flex-col justify-center divide-y divide-slate-200 [&>*]:py-2">
+
+
+            <div class="w-full max-w-3xl mx-auto">
+            
+                <!-- Vertical Timeline #2 -->
+                <div class="space-y-8 pt-28 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
+         
+                    <!-- Item #3 -->
+                    <div *ngFor="let record of records; let i=index"  (click)="isReceipt = true; stringify(record)"
+                     class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                        <!-- Icon -->
+                        <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-emerald-500 text-slate-500 group-[.is-active]:text-emerald-50 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                            <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="12" height="10">
+                                <path fill-rule="nonzero" d="M10.422 1.257 4.655 7.025 2.553 4.923A.916.916 0 0 0 1.257 6.22l2.75 2.75a.916.916 0 0 0 1.296 0l6.415-6.416a.916.916 0 0 0-1.296-1.296Z" />
+                            </svg>
+                        </div>
+                        <!-- Card -->
+                        <div *ngIf="isArray(record)" class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded border border-slate-200 shadow">
+                            <div class="flex items-center justify-between space-x-2 mb-1">
+                                <div class="font-bold text-slate-900">{{record}}</div>
+                                <time class="text-xs font-medium text-indigo-500">{{ convertDate(record[0].data.date) }}</time>
+                            </div>
+                            <div class="text-slate-500">
+                                <p *ngIf="record[0].data.recipientStore">
+                                  Stock transferred  from <span class="font-semibold text-slate-800 uppercase">{{ record[0].data.storeId.location }}</span>  to  <span class="font-semibold text-slate-800 uppercase">{{ record[0].data.recipientStore.location }}</span> 
+                                </p>
+                                <p *ngIf="!record[0].data.recipientStore">
+                                   Stock Added <span class="font-semibold text-slate-800 uppercase">{{ record[0].data.storeId.location }}</span>
+                                 </p>
+                            </div>
+                        </div>
+                        <div *ngIf="!isArray(record)" class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded border border-slate-200 shadow">
+                            <div class="flex items-center justify-between space-x-2 mb-1">
+                                <div class="font-bold text-slate-900">Stock Transit</div>
+                                <time class="text-xs font-medium text-indigo-500">{{ convertDate(record.date) }}</time>
+                            </div>
+                            <div class="text-slate-500">
+                                <p>
+                                  Invoice issued to <span class="font-semibold text-slate-800 uppercase">{{ record.recipient.username}}</span>  
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <!-- End: Vertical Timeline #2 -->
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="relative z-20" aria-labelledby="modal-title" role="dialog" aria-modal="true" *ngIf="isReceipt">
+        <div class="fixed inset-0 bg-gray-500/75 transition-opacity"  ></div>
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto" (click)="closeModal()">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <app-store-receipt [log]="log"></app-store-receipt>
+            </div>
+        </div>
+    </div>
+</section>
