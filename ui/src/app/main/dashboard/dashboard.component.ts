@@ -116,6 +116,9 @@ export class DashboardComponent {
     getStoreSummary(){
       this.dashboardService.getStoreSummary(this.selected.startDate, this.selected.endDate).subscribe((summary) => {
         this.storeSummary = summary;
+        console.log(this.storeSummary);
+        console.log(this.storeSummary.stockWorth || this.storeSummary.invoiceReturns != null || this.storeSummary.totalQuantities != null)
+
       });
     }
 
@@ -124,10 +127,10 @@ export class DashboardComponent {
   }
 
   loadData() {
-
     this.dashboardService
       .getInvoiceSummary(this.selected.startDate, this.selected.endDate)
       .subscribe((response) => {
+        console.log(response);
         const monthNames = [
           "Jan", "Feb", "Mar", "Apr", "May", "Jun",
           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
@@ -149,16 +152,17 @@ export class DashboardComponent {
         const totalItemsSold = response.summary.map((item: any) =>
           item.totalItemsSold.toFixed(2)
         );
-        this.chartOptions.series = [
-          { name: "Total Amount Paid", data: totalAmountPaid },
-          { name: "Total Invoice Amount", data: totalInvoiceAmount },
-          { name: "Total Items Sold", data: totalItemsSold }
-        ];
-        this.chartOptions.xaxis = { categories };
-
-        (this.chart as any).updateOptions(this.chartOptions);
+        this.chartOptions = {
+          ...this.chartOptions, // Keep other chart options unchanged
+          series: [
+            { name: "Total Amount Paid", data: totalAmountPaid },
+            { name: "Total Invoice Amount", data: totalInvoiceAmount },
+            { name: "Total Items Sold", data: totalItemsSold }
+          ],
+          xaxis: { categories }
+        };
+  
+        this.cdr.detectChanges();
       });
   }
-
-  
 }

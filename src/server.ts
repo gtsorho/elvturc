@@ -1,8 +1,6 @@
 import express, { Application, Request, Response } from 'express';
 import bodyParser from 'body-parser';
-import { sequelize } from './database'; // Sequelize configuration
 import routes from './routes'; // Define API routes
-import db from './models'; //
 import cors from 'cors';
 import path from 'path';
 
@@ -22,12 +20,6 @@ app.get('*', (req: Request, res: Response) => {
   res.sendFile(path.join(angularPath, 'index.html'));
 });
 
-app.listen(PORT, async () => {
-  try {
-    await sequelize.authenticate();
-    console.log('Database connected!');
-  } catch (error) {
-    console.error('Database connection failed:', error);
-  }
-  console.log(`Server running on port ${PORT}`);
+app.listen(PORT, () => {
+  console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });
