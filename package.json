@@ -4,8 +4,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/server.js",
-   "dev": "nodemon --exec ts-node src/server.ts",
-    "build": "tsc",
+    "dev": "nodemon --exec ts-node src/server.ts",
+    "build:backend": "tsc --build tsconfig.json",
+    "build:frontend": "cd ui && npm run build --prod",
+    "build": "npm run build:backend && npm run build:frontend",
     "lint": "eslint . --ext .ts",
     "test": "jest"
   },

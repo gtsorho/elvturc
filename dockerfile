@@ -11,8 +11,11 @@ RUN npm install
 # Copy all backend files
 COPY . .
 
-# Expose the port your server runs on
+# Compile TypeScript
+RUN npm run build:backend
+
+# Expose the port the app runs on
 EXPOSE 3000
 
-# Command to start the server
-CMD ["npm", "run", "dev"]
+# Command to start the app
+CMD ["node", "dist/server.js"]

@@ -1,5 +1,7 @@
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
+import bcrypt from "bcrypt";
+
 
 import user from './user';
 import store from './store';
@@ -15,15 +17,15 @@ import item_invoice from './item_invoice';
 dotenv.config();
 
 const sequelize = new Sequelize(
-    process.env.DATABASE!, 
-    process.env.DB_USERNAME!, 
-    process.env.DB_PASSWORD!, 
-    {
-        host: process.env.DB_HOST!,
-        port: parseInt(process.env.DB_PORT!),
-        dialect: 'mysql',
-        logging: false
-    }
+  process.env.DATABASE!,
+  process.env.DB_USERNAME!,
+  process.env.DB_PASSWORD!,
+  {
+    host: process.env.DB_HOST!,
+    port: parseInt(process.env.DB_PORT!),
+    dialect: 'mysql',
+    logging: false
+  }
 );
 
 const db: any = {};
@@ -51,9 +53,9 @@ db.user.hasMany(db.product_log)
 db.product_log.belongsTo(db.user);
 
 db.user.hasOne(db.invoice, {
-    foreignKey: 'recipientId',
-  });
-db.invoice.belongsTo(db.user, {as:'recipient',});
+  foreignKey: 'recipientId',
+});
+db.invoice.belongsTo(db.user, { as: 'recipient', });
 
 db.user.hasMany(db.invoice)
 db.invoice.belongsTo(db.user);
@@ -69,20 +71,47 @@ db.category.belongsToMany(db.item, { through: 'item_categories' });
 db.invoice.belongsToMany(db.item, { through: 'item_invoice' });
 db.item.belongsToMany(db.invoice, { through: 'item_invoice' });
 
-sequelize.sync({alter: true, force: false})
-.then(() => {
+sequelize.sync({ alter: true, force: false })
+  .then(() => {
     console.log('All data in sync');
-})
-.catch((error: any) => {
+  })
+  .catch((error: any) => {
     console.error('Unable to sync the database:', error);
-});
+  });
 
 
 
 sequelize.authenticate().then(() => {
-    console.log('Connection has been established successfully.');
+  console.log('Connection has been established successfully.');
+  seedUser();
 }).catch((error: any) => {
-    console.error('Unable to connect to the database:', error);
+  console.error('Unable to connect to the database:', error);
 });
+
+
+
+async function seedUser() {
+  const transaction = await db.sequelize.transaction();
+  try {
+    const hashedPassword = await bcrypt.hash("numlock11", 10);
+
+
+
+    const existingUser = await db.user.findOne({ where: { username: "manager.admin" } });
+    if (!existingUser) {
+      await db.user.create({
+        username: "manager.admin",
+        phone: "0544069203",
+        password: hashedPassword,
+        role: "admin",
+      });
+    }
+
+    console.log("Default user seeded!");
+  } catch (err) {
+    console.error("Seeding failed:", err);
+  }
+}
+
 
 export default db;

@@ -5,36 +5,35 @@ services:
     build: .
     ports:
       - "3000:3000"
+    restart: "always"
     depends_on:
-      - mysql
+      - db
     environment:
-      DB_HOST: mysql
+      DB_HOST: db
       DB_USER: root
-      DB_PASSWORD: password
-      DB_NAME: elvturc_db
+      DB_PASSWORD: 'numlock11'
+      DB_NAME: 'elvturc_db'
+      DB_PORT: 3306    
     volumes:
       - .:/app
       - /app/node_modules
-    command: npm run dev
+    command: npm run start
   
   frontend:
     build: ./ui
+    restart: "always"
     ports:
-      - "80:80"
+      - "81:80"
     depends_on:
       - backend
 
-  mysql:
-    image: mysql:8
-    container_name: elvturc_db
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: elvturc_db
+  db:
+    image: mysql:latest
+    restart: "always"
     ports:
-      - "3306:3306"
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "numlock11"
     volumes:
-      - mysql_data:/var/lib/mysql
-
-volumes:
-  mysql_data:
+      - ./dbSource:/var/lib/mysql    # Bind Mount (Uncomment to use)
+  
