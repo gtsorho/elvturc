@@ -14,6 +14,10 @@ import item_categories from './item_category';
 import item_invoice from './item_invoice';
 
 
+const MAX_RETRIES = 10;
+let retries = 0;
+
+
 dotenv.config();
 
 const sequelize = new Sequelize(
@@ -71,22 +75,54 @@ db.category.belongsToMany(db.item, { through: 'item_categories' });
 db.invoice.belongsToMany(db.item, { through: 'item_invoice' });
 db.item.belongsToMany(db.invoice, { through: 'item_invoice' });
 
-sequelize.sync({ alter: true, force: false })
-  .then(() => {
-    console.log('All data in sync');
-  })
-  .catch((error: any) => {
-    console.error('Unable to sync the database:', error);
-  });
 
 
 
-sequelize.authenticate().then(() => {
-  console.log('Connection has been established successfully.');
-  seedUser();
-}).catch((error: any) => {
-  console.error('Unable to connect to the database:', error);
-});
+  
+  async function connectWithRetry() {
+    while (retries < MAX_RETRIES) {
+      try {
+        await sequelize.authenticate();
+        console.log("✅ Database connection has been established successfully.");  
+        sequelize.sync({ alter: true, force: false })
+        .then(() => {
+          console.log('All data in sync');
+        })
+        .catch((error: any) => {
+          console.error('Unable to sync the database:', error);
+        });
+        await seedUser();
+        break;
+      } catch (err: any) {
+        console.error("❌ Unable to connect to the database:", err.message);
+        retries++;
+        console.log(`🔁 Retrying (${retries}/${MAX_RETRIES}) in 5 seconds...`);
+        await new Promise(res => setTimeout(res, 5000));
+      }
+    }
+  
+    if (retries === MAX_RETRIES) {
+      console.error("❌ Max retries reached. Exiting...");
+      process.exit(1); // or throw an error depending on how you want to handle it
+    }
+  }
+  
+  connectWithRetry();
+  
+// sequelize.sync({ alter: true, force: false })
+// .then(() => {
+//   console.log('All data in sync');
+// })
+// .catch((error: any) => {
+//   console.error('Unable to sync the database:', error);
+// });
+
+// sequelize.authenticate().then(() => {
+//   console.log('Connection has been established successfully.');
+//   seedUser();
+// }).catch((error: any) => {
+//   console.error('Unable to connect to the database:', error);
+// });
 
 
 
@@ -94,8 +130,6 @@ async function seedUser() {
   const transaction = await db.sequelize.transaction();
   try {
     const hashedPassword = await bcrypt.hash("numlock11", 10);
-
-
 
     const existingUser = await db.user.findOne({ where: { username: "manager.admin" } });
     if (!existingUser) {

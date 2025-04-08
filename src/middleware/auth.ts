@@ -4,6 +4,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+
+console.log(process.env.JWT_KEY)
+
 const secretKey: string = process.env.JWT_KEY || '';
 
 interface DecodedToken {

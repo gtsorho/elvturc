@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   backend:
     build: .
@@ -15,7 +13,7 @@ services:
       DB_NAME: 'elvturc_db'
       DB_PORT: 3306    
     volumes:
-      - .:/app
+      # - .:/app
       - /app/node_modules
     command: npm run start
   
@@ -37,3 +35,16 @@ services:
     volumes:
       - ./dbSource:/var/lib/mysql    # Bind Mount (Uncomment to use)
   
+    db-backup:
+    image: alpine
+    volumes:
+      - ./backup.sh:/backup.sh
+      - ./dbBackups:/backup
+    depends_on:
+      - db
+    entrypoint: >
+      /bin/sh -c "
+        apk add --no-cache mysql-client && 
+        crontab -l | { cat; echo '0 * * * * /backup.sh'; } | crontab - && 
+        crond -f -L /dev/stdout"
+

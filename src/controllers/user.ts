@@ -2,7 +2,9 @@ import { Request, Response } from 'express';
 import Joi from 'joi';
 import db from '../models';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
+dotenv.config();
 
 const schema = {
     create: Joi.object({
@@ -33,8 +35,7 @@ export default {
                 return res.status(401).json({ message: 'Invalid credentials' });
             }
 
-            const token = jwt.sign({ username: user.username, id: user.id, role: user.role, InstitutionID: user.InstitutionId }, process.env.JWT_KEY!, { expiresIn: '1h' });
-
+            const token = jwt.sign({ username: user.username, id: user.id, role: user.role, InstitutionID: user.InstitutionId }, process.env.JWT_KEY! , { expiresIn: '1h' });
             res.json({ token });
         } catch (error) {
             console.error(error);

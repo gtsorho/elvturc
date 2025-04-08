@@ -18,4 +18,5 @@ RUN npm run build:backend
 EXPOSE 3000
 
 # Command to start the app
-CMD ["node", "dist/server.js"]
+# CMD ["node", "dist/server.js"]
+CMD ["npm", "start"]
