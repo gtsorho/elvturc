@@ -1,3 +1,19 @@
-<div class="flex flex-col h-screen bg-gray-200 dark:bg-gray-900">
-    <router-outlet ></router-outlet>
+
+<div *ngIf="isOnline; else offline" class="text-green-600">
+    <div   class="flex flex-col h-screen bg-gray-200 dark:bg-gray-900">
+        <router-outlet ></router-outlet>
+    </div>
+</div>
+    
+<div class=" items-center">
+    <ng-template #offline class="">
+        <div class="h-screen flex items-center  w-full">
+            <div class="mx-auto">
+                <div class="w-full p-5 flex" >
+                    <span class="loader mx-auto justify-center"></span>
+                </div>
+                <p class="text-red-600 font-semibold">🌏 You are offline</p>
+            </div>
+        </div>
+    </ng-template>
 </div>
