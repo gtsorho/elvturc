@@ -1,0 +1,66 @@
+import { Injectable } from '@angular/core';
+import { LoaderService } from '../../loader.service';
+import { Observable } from 'rxjs';
+import axios from 'axios';
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SettingsService {
+  constructor(private loaderService: LoaderService) { }
+
+  getAccounts(): Observable<any> {
+    return new Observable((observer) => {
+      axios.get(`${this.loaderService.baseUrl}/accounts`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.getCookie('token')}`,
+          }
+        }
+      ).then((response) => {
+        observer.next(response.data);
+        observer.complete();
+      })
+        .catch((error: any) => {
+          console.log(error);
+        });
+    })
+  }
+
+  activeAccount(): Observable<any> {
+    return new Observable((observer) => {
+      axios.get(`${this.loaderService.baseUrl}/accounts/active`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.getCookie('token')}`,
+          }
+        }
+      ).then((response) => {
+        observer.next(response.data);
+        observer.complete();
+      })
+        .catch((error: any) => {
+          console.log(error);
+        });
+    })
+  }
+
+  getCookie(cname: string): string {
+    let name = cname + '=';
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) === 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return '';
+  }
+
+}

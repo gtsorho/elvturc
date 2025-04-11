@@ -1,0 +1,37 @@
+
+.table-wrapper {
+    max-height: 70vh; /* Adjust as needed */
+    overflow-y: auto;
+    overflow-x: auto; /* allows horizontal scroll if needed */
+    width: 100%;
+  }
+  
+  table {
+    width: 100%;
+    min-width: 800px; /* or whatever width your content needs */
+    border-collapse: collapse;
+    table-layout: auto;
+  }
+  
+  thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f8fafc;
+    z-index: 10;
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 1px solid #cbd5e1;
+  }
+  
+  /* Optional: styling for better consistency in dark mode */
+  .dark thead th {
+    background-color: #334155;
+    color: #f1f5f9;
+    border-bottom: 1px solid #475569;
+  }
+  
+  td {
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  

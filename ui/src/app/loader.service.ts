@@ -11,7 +11,7 @@ export class LoaderService {
   private jwtHelper: JwtHelperService = new JwtHelperService();
   baseUrl = 'http://localhost:3000/api'
 
-  private darkMode = new BehaviorSubject<boolean>(false); 
+  private darkMode = new BehaviorSubject<boolean>(true); 
   isDarkMode$ = this.darkMode.asObservable();
 
   setDarkMode(isDark: boolean): void {

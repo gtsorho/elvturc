@@ -1,16 +1,18 @@
 import db from '../models';
+import axios from 'axios';
 import { Transaction } from 'sequelize';
-
+import dotenv from 'dotenv';
+dotenv.config();
 
 export async function createInvoice(data: {
     date: Date;
     items: { itemId: number; quantity: number }[];
     amount_paid: number;
     UserId: number;
-    recipientId: number;
+    RecipientId: number;
 
 }) {
-    const { date, items, amount_paid, UserId, recipientId} = data;
+    const { date, items, amount_paid, UserId, RecipientId} = data;
 
     const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -38,7 +40,7 @@ export async function createInvoice(data: {
         amount_paid: amount_paid,
         is_balanced: amount_paid >= totalAmount,
         UserId: UserId,
-        recipientId: recipientId
+        RecipientId: RecipientId
 
     });
 
@@ -57,16 +59,16 @@ export async function createInvoice(data: {
 export async function updateQty(data: {
     itemId: number;
     quantity: number;
-    recipientId: number;
+    RecipientId: number;
     date: Date;
 }) {
-    const { itemId, quantity, recipientId, date } = data;
+    const { itemId, quantity, RecipientId, date } = data;
 
     const adjustedQuantity = quantity * -1;
 
     try {
         // Validate inputs
-        if (!itemId || quantity <= 0 || !recipientId || !date) {
+        if (!itemId || quantity <= 0 || !RecipientId || !date) {
             throw new Error('Invalid input data');
         }
 
@@ -89,7 +91,7 @@ export async function updateQty(data: {
             }
 
             const recipientStore = await db.store.findOne({
-                where: { UserId: recipientId },
+                where: { UserId: RecipientId },
                 transaction,
             });
 
@@ -142,8 +144,7 @@ export async function updateQty(data: {
         return { success: false, error: 'An unexpected error occurred' };
     }
 }
-
-    
+ 
 export async function updateOrCreateRecipientStoreItem(
     recipientStoreId: number,
     productId: number,
@@ -216,4 +217,29 @@ export async function updateOrCreateRecipientStoreItem(
         console.error(error.message);
         return { success: false, message: 'Failed to update recipient store item' };
     }
+}
+
+
+interface SMSPayload {
+  sender: string;
+  message: string;
+  recipients: string[];
+}
+
+export async function sendSMS(payload: SMSPayload): Promise<void> {
+  try {
+    const response = await axios.post(
+      'https://sms.arkesel.com/api/v2/sms/send',
+      payload,
+      {
+        headers: {
+          'api-key': process.env.SMS_API_KEY || '',
+        }
+      }
+    );
+
+    console.log('✅ SMS sent:', response.data);
+  } catch (error: any) {
+    console.error('❌ Error sending SMS:', error.response?.data || error.message);
+  }
 }

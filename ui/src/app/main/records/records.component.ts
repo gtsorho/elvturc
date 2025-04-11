@@ -39,6 +39,8 @@ closeModal() {
           return data.map((record: any) => {
             try {
               const parsedRecord = JSON.parse(record.log);
+              parsedRecord.title = record.title
+              parsedRecord.type = record.type
 
               return parsedRecord;
             } catch (e) {

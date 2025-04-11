@@ -1,56 +1,77 @@
 <div class="w-full h-full">
     <div>
         <div class="flex flex-no-wrap">
-            <div  class="w-64 absolute h-screen sm:relative bg-gray-800 dark:bg-gray-400 shadow flex-col justify-between hidden sm:flex">
+            <div  class="w-64 absolute h-screen sm:relative bg-gray-800 dark:bg-gray-200 shadow flex-col justify-between hidden sm:flex">
                 <div class="px-8 h-[93vh]">
                     <div class="h-16 w-full flex items-center ">
-                        <img src="assets/images/logo3.png" class="pt-3 w-44" alt="Logo">
+                        <img *ngIf="!isDarkMode"  src="assets/images/logo1.png" class="pt-3 w-44" alt="Logo">
+                        <img *ngIf="isDarkMode" src="assets/images/logo2.png" class="pt-3 w-44" alt="Logo">
                     </div>
                     <ul class="mt-12">
-                        <li class="flex w-full hover:bg-slate-700/80 p-1 rounded-md justify-between text-gray-400 hover:text-gray-300 cursor-pointer items-center mb-6">
-                            <a [routerLink]="['/main/dashboard']"  class="flex items-center focus:bg-slate-700/80 focus:w-full focus:p-1 focus:rounded-md focus:text-gray-200">
-                                <i class="fa-solid fa-gauge"></i>
-                                <span class="text-sm ml-2">Dashboard</span>
-                            </a>
+                        <li
+                          class="flex w-full hover:bg-slate-700/80 p-1 rounded-md justify-start text-gray-400 dark:text-gray-800 hover:text-gray-300 cursor-pointer items-center mb-6"
+                          [routerLink]="['/main/dashboard']"
+                          routerLinkActive="bg-slate-700/80 text-gray-200"
+                        >
+                          <i class="fa-solid fa-gauge"></i>
+                          <span class="text-sm ml-2">Dashboard</span>
                         </li>
-                        <li class="flex w-full hover:bg-slate-700/80 p-1 rounded-md justify-between text-gray-400 hover:text-gray-300 cursor-pointer items-center mb-6">
-                            <a [routerLink]="['/main/store']"  class="flex items-center focus:bg-slate-700/80 focus:w-full focus:p-1 focus:rounded-md focus:text-gray-200">
-                                <i class="fa-solid fa-database"></i>
-                                <span class="text-sm ml-2">Stores</span>
-                            </a>
+                      
+                        <li
+                          class="flex w-full hover:bg-slate-700/80 p-1 rounded-md justify-start text-gray-400 dark:text-gray-800 hover:text-gray-300 cursor-pointer items-center mb-6"
+                          [routerLink]="['/main/store']"
+                          routerLinkActive="bg-slate-700/80 text-gray-200"
+                        >
+                          <i class="fa-solid fa-database"></i>
+                          <span class="text-sm ml-2">Stores</span>
                         </li>
-                        <li class="flex w-full hover:bg-slate-700/80 p-1 rounded-md justify-between text-gray-400 hover:text-gray-300 cursor-pointer items-center mb-6">
-                            <a [routerLink]="['/main/invoices']"  class="flex items-center focus:bg-slate-700/80 focus:w-full focus:p-1 focus:rounded-md focus:text-gray-200">
-                                <i class="fa-solid fa-file-invoice"></i>
-                                <span class="text-sm ml-2">Invoices</span>
-                            </a>
+                      
+                        <li
+                          class="flex w-full hover:bg-slate-700/80 p-1 rounded-md justify-start text-gray-400 dark:text-gray-800 hover:text-gray-300 cursor-pointer items-center mb-6"
+                          [routerLink]="['/main/invoices']"
+                          routerLinkActive="bg-slate-700/80 text-gray-200"
+                        >
+                          <i class="fa-solid fa-file-invoice"></i>
+                          <span class="text-sm ml-2">Invoices</span>
                         </li>
-                        <li class="flex w-full hover:bg-slate-700/80 p-1 rounded-md justify-between text-gray-400 hover:text-gray-300 cursor-pointer items-center mb-6">
-                            <a [routerLink]="['/main/records']" class="flex items-center focus:bg-slate-700/80 focus:w-full focus:p-1 focus:rounded-md focus:text-gray-200">
-                                <i class="fa-solid fa-clock-rotate-left"></i>
-                                <span class="text-sm ml-2">Records</span>
-                            </a>
+                      
+                        <li
+                          class="flex w-full hover:bg-slate-700/80 p-1 rounded-md justify-start text-gray-400 dark:text-gray-800 hover:text-gray-300 cursor-pointer items-center mb-6"
+                          [routerLink]="['/main/records']"
+                          routerLinkActive="bg-slate-700/80 text-gray-200"
+                        >
+                          <i class="fa-solid fa-clock-rotate-left"></i>
+                          <span class="text-sm ml-2">Records</span>
                         </li>
-                    </ul>
+                        <li
+                          class="flex w-full hover:bg-slate-700/80 p-1 rounded-md justify-start text-gray-400 dark:text-gray-800 hover:text-gray-300 cursor-pointer items-center mb-6"
+                          [routerLink]="['/main/transactions']"
+                          routerLinkActive="bg-slate-700/80 text-gray-200"
+                        >
+                        <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                          <span class="text-sm ml-2">Transactions</span>
+                        </li>
+                      </ul>
+                      
                 </div>
                 <div class="px-8 border-t border-gray-700">
-                    <ul class="w-full flex items-center justify-between bg-gray-800">
-                        <li class="cursor-pointer text-white pt-5 pb-3">
-                            <button aria-label="show notifications" class="focus:bg-slate-700/80 focus:ring-2 rounded ">
-                                <i class="fa-solid fa-bell"></i>
+                    <ul class="w-full flex items-center justify-between bg-transparent">
+                        <li class="cursor-pointer text-white dark:text-gray-800 pt-5 pb-3">
+                            <button aria-label="show notifications" (click)="logout()" class="focus:bg-slate-700/80 focus:ring-2 rounded ">
+                              <i class="fa-solid fa-right-from-bracket"></i>
                             </button>
                         </li>
-                        <li class="cursor-pointer text-white pt-5 pb-3">
+                        <li class="cursor-pointer text-white dark:text-gray-800 pt-5 pb-3">
                             <button aria-label="open chats" class="focus:bg-slate-700/80 focus:ring-2 rounded ">
-                                <i (click)="toggleDarkMode()" class="fa-solid" [class]="isDarkMode ? 'fa-moon dark:text-white' : 'fa-sun text-gray-100'"></i>
+                                <i (click)="toggleDarkMode()" class="fa-solid" [class]="isDarkMode ? 'fa-moon dark:text-gray-800' : 'fa-sun text-gray-100'"></i>
                             </button>
                         </li>
-                        <li class="cursor-pointer text-white pt-5 pb-3">
-                            <button aria-label="open settings" class="focus:bg-slate-700/80 focus:ring-2 rounded ">
+                        <li class="cursor-pointer text-white dark:text-gray-800 pt-5 pb-3">
+                            <button (click)="router.navigate(['/main/settings']);" aria-label="open settings" class="focus:bg-slate-700/80 focus:ring-2 rounded ">
                                 <i class="fa-solid fa-sliders"></i>
                             </button>
                         </li>
-                        <li class="cursor-pointer text-white pt-5 pb-3">
+                        <li class="cursor-pointer text-white dark:text-gray-800 pt-5 pb-3">
                             <button (click)="router.navigate(['/main/staff']);" aria-label="open logs" class="focus:bg-slate-700/80 focus:ring-2 rounded">
                                 <i class="fa-solid fa-user-group"></i>
                             </button>
@@ -62,7 +83,7 @@
                 <button  *ngIf="!isSidebarOpen" aria-label="toggle sidebar" id="openSideBar" class="h-10 w-10 bg-gray-800 absolute right-[-55px] mt-1 -mr-10 flex items-center shadow rounded-tr rounded-br justify-center cursor-pointer focus:bg-slate-700/80 focus:ring-2 focus:ring-offset-2 rounded focus:ring-gray-800" (click)="toggleSidebar(true)">
                     <i class="fa-solid fa-bars text-white"></i>
                 </button>
-                <button *ngIf="isSidebarOpen" aria-label="Close sidebar" id="closeSideBar" class=" h-10 w-10 bg-gray-800 absolute left-[30px] mt-16 -mr-10 flex items-center shadow rounded-tr rounded-br justify-center cursor-pointer text-white" (click)="toggleSidebar(false)">
+                <button *ngIf="isSidebarOpen" aria-label="Close sidebar" id="closeSideBar" class=" h-10 w-10 bg-gray-800 absolute left-[30px] mt-16 -mr-10 flex items-center shadow rounded-tr rounded-br justify-center cursor-pointer text-white dark:text-gray-800" (click)="toggleSidebar(false)">
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <div class="px-8 h-[93vh]">
@@ -70,68 +91,87 @@
                         <img src="assets/images/logo3.png" class="pt-3 w-44" alt="Logo">
                     </div>
                     <ul class="mt-12">
-                        <li class="flex w-full hover:bg-slate-700/80 p-1 rounded-md justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center mb-6">
-                            <a [routerLink]="['/main/dashboard']" class="flex items-center focus:bg-slate-700/80 focus:w-full focus:p-1 focus:rounded-md focus:text-gray-200">
-                                <i class="fa-solid fa-gauge"></i>
-                                <span class="text-sm ml-2">Dashboard</span>
-                            </a>
-                            <div class="py-1 px-3 bg-gray-600 rounded text-gray-300 flex items-center justify-center text-xs">5</div>
+                        <li
+                          [routerLink]="['/main/dashboard']"
+                          class="flex w-full hover:bg-slate-700/80 p-1 rounded-md justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center mb-6"
+                        >
+                          <div class="flex items-center">
+                            <i class="fa-solid fa-gauge"></i>
+                            <span class="text-sm ml-2">Dashboard</span>
+                          </div>
+                          <div class="py-1 px-3 bg-gray-600 rounded text-gray-300 flex items-center justify-center text-xs">
+                            5
+                          </div>
                         </li>
-                        <li class="flex w-full hover:bg-slate-700/80 p-1 rounded-md justify-between text-gray-400 hover:text-gray-300 cursor-pointer items-center mb-6">
-                            <a [routerLink]="['/main/store']" class="flex items-center focus:bg-slate-700/80 focus:w-full focus:p-1 focus:rounded-md focus:text-gray-200">
-                                <i class="fa-solid fa-database"></i>
-                                <span class="text-sm ml-2">Stores</span>
-                            </a>
-                            <div class="py-1 px-3 bg-gray-600 rounded text-gray-300 flex items-center justify-center text-xs">8</div>
+                      
+                        <li
+                          [routerLink]="['/main/store']"
+                          class="flex w-full hover:bg-slate-700/80 p-1 rounded-md justify-between text-gray-400 dark:text-gray-800 hover:text-gray-300 cursor-pointer items-center mb-6"
+                        >
+                          <div class="flex items-center">
+                            <i class="fa-solid fa-database"></i>
+                            <span class="text-sm ml-2">Stores</span>
+                          </div>
+                          <div class="py-1 px-3 bg-gray-600 rounded text-gray-300 flex items-center justify-center text-xs">
+                            8
+                          </div>
                         </li>
-                        <li class="flex w-full hover:bg-slate-700/80 p-1 rounded-md justify-between text-gray-400 hover:text-gray-300 cursor-pointer items-center mb-6">
-                            <a [routerLink]="['/main/invoices']" class="flex items-center focus:bg-slate-700/80 focus:w-full focus:p-1 focus:rounded-md focus:text-gray-200" >
-                                <i class="fa-solid fa-file-invoice"></i>
-                                <span class="text-sm ml-2">Invoices</span>
-                            </a>
+                      
+                        <li
+                          [routerLink]="['/main/invoices']"
+                          class="flex w-full hover:bg-slate-700/80 p-1 rounded-md justify-between text-gray-400 dark:text-gray-800 hover:text-gray-300 cursor-pointer items-center mb-6"
+                        >
+                          <div class="flex items-center">
+                            <i class="fa-solid fa-file-invoice"></i>
+                            <span class="text-sm ml-2">Invoices</span>
+                          </div>
                         </li>
-                        <li class="flex w-full hover:bg-slate-700/80 p-1 rounded-md justify-between text-gray-400 hover:text-gray-300 cursor-pointer items-center mb-6">
-                            <a [routerLink]="['/main/records']" class="flex items-center focus:bg-slate-700/80 focus:w-full focus:p-1 focus:rounded-md focus:text-gray-200">
-                                <i class="fa-solid fa-clock-rotate-left"></i>
-                                <span class="text-sm ml-2">Records</span>
-                            </a>
+                      
+                        <li
+                          [routerLink]="['/main/records']"
+                          class="flex w-full hover:bg-slate-700/80 p-1 rounded-md justify-between text-gray-400 dark:text-gray-800 hover:text-gray-300 cursor-pointer items-center mb-6"
+                        >
+                          <div class="flex items-center">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                            <span class="text-sm ml-2">Records</span>
+                          </div>
                         </li>
-                    </ul>
+                        <li
+                          class="flex w-full hover:bg-slate-700/80 p-1 rounded-md justify-start text-gray-400 dark:text-gray-800 hover:text-gray-300 cursor-pointer items-center mb-6"
+                          [routerLink]="['/main/transactions']"
+                          routerLinkActive="bg-slate-700/80 text-gray-200"
+                        >
+                        <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                          <span class="text-sm ml-2">Transactions</span>
+                        </li>
+                      </ul>                      
                 </div>
                 <div class="px-8 border-t border-gray-700">
-                    <ul class="w-full flex items-center justify-between bg-gray-800">
-                        <li class="cursor-pointer text-white pt-5 pb-3">
-                            <button aria-label="show notifications" class="focus:bg-slate-700/80 focus:ring-2 rounded ">
-                                <svg  xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bell" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z"></path>
-                                    <path d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6"></path>
-                                    <path d="M9 17v1a3 3 0 0 0 6 0v-1"></path>
-                                </svg>
+                    <ul class="w-full flex items-center justify-between bg-transparent">
+                        <li class="cursor-pointer text-white dark:text-gray-800 pt-5 pb-3">
+                            <button aria-label="show notifications" (click)="logout()" class="focus:bg-slate-700/80 focus:ring-2 rounded ">
+                              <i class="fa-solid fa-right-from-bracket"></i>
                             </button>
                         </li>
-                        <li class="cursor-pointer text-white pt-5 pb-3">
-                           <button aria-label="open chats" class="focus:bg-slate-700/80 focus:ring-2 rounded">
-                            <i (click)="toggleDarkMode()" class="fa-solid absolute top-5 right-5" [class]="isDarkMode ? 'fa-moon dark:text-white' : 'fa-sun text-gray-900'"></i>
-                           </button>
-                        </li>
-                        <li class="cursor-pointer text-white pt-5 pb-3">
-                            <button aria-label="open settings" class="focus:bg-slate-700/80 focus:ring-2 rounded ">
-                                <svg  xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z"></path>
-                                    <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                                    <circle cx="12" cy="12" r="3"></circle>
-                                </svg>
+                        <li class="cursor-pointer text-white dark:text-gray-800 pt-5 pb-3">
+                            <button aria-label="open chats" class="focus:bg-slate-700/80 focus:ring-2 rounded ">
+                                <i (click)="toggleDarkMode()" class="fa-solid" [class]="isDarkMode ? 'fa-moon dark:text-gray-800' : 'fa-sun text-gray-100'"></i>
                             </button>
                         </li>
-                        <li class="cursor-pointer text-white pt-5 pb-3">
-                            <button aria-label="open logs" class="focus:bg-slate-700/80 focus:ring-2 rounded ">
+                        <li class="cursor-pointer text-white dark:text-gray-800 pt-5 pb-3">
+                            <button (click)="router.navigate(['/main/settings']);" aria-label="open settings" class="focus:bg-slate-700/80 focus:ring-2 rounded ">
+                                <i class="fa-solid fa-sliders"></i>
+                            </button>
+                        </li>
+                        <li class="cursor-pointer text-white dark:text-gray-800 pt-5 pb-3">
+                            <button (click)="router.navigate(['/main/staff']);" aria-label="open logs" class="focus:bg-slate-700/80 focus:ring-2 rounded">
                                 <i class="fa-solid fa-user-group"></i>
                             </button>
                         </li>
                     </ul>
                 </div>
             </div>
-            <div class="container mx-auto dark:bg-gray-800 py-10 h-64 md:w-4/5 w-11/12 px-6">
+            <div class="container mx-auto  py-10 h-64 md:w-4/5 w-11/12 px-6">
                 <div class="w-full h-full rounded">
                     <router-outlet></router-outlet>
                 </div>

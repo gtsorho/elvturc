@@ -35,7 +35,7 @@ services:
     volumes:
       - ./dbSource:/var/lib/mysql    # Bind Mount (Uncomment to use)
   
-    db-backup:
+  db-backup:
     image: alpine
     volumes:
       - ./backup.sh:/backup.sh

@@ -9,8 +9,8 @@ interface StaffData {
   username: string;
   phone: string;
   role: string;
-  password: string;
-  confirmPassword: string;
+  password: string | null;
+  confirmPassword: string | null;
 
 }
 
@@ -26,8 +26,8 @@ export class StaffComponent {
     username: '',
     phone: '',
     role: 'sales',
-    password: '',
-    confirmPassword: ''
+    password: null,
+    confirmPassword: null
   }
 
   staffs: StaffData[] = [];

@@ -59,7 +59,7 @@ export class InvoiceComponent {
       date: this.date,
       items: this.stockEntires,
       amount_paid: this.amount_paid,
-      recipientId: this.destination
+      RecipientId: this.destination
     }
 
     $event.preventDefault();
@@ -96,16 +96,16 @@ export class InvoiceComponent {
   updateInvoice($event: any) {  
       $event.preventDefault();
       this.isLoader = true;
-      axios.put(`${this.loaderService.baseUrl}/invoice/${this.selectedInvoice.id}`, {amount_paid: this.balancePaid},
+      axios.put(`${this.loaderService.baseUrl}/invoice/${this.selectedInvoice.id}`, {amount_paid: parseFloat(this.balancePaid.toString())},
         {
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${this.getCookie('token')}`,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.getCookie('token')}`,
           }
         }
       )
         .then(response => {
-  
+      
           this.isLoader = false
           this.isUpdateInvoice = false
           this.getInvoice()
@@ -122,6 +122,11 @@ export class InvoiceComponent {
     this.isReceipt = true;
   }
 
+  addCommasToNumber(value: number | string): string {
+    const num = Number(value);
+    if (isNaN(num)) return '0.00'; // fallback for invalid values
+    return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
   getInvoice() {
     this.invoiceService.getInvoices().subscribe(res => {
       this.invoices = res.data;

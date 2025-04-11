@@ -3,9 +3,19 @@
 @tailwind utilities;
 
 
-html {
-    transition: background-color 0.3s, color 0.3s;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+p, h1,h2,h3,h4,h5, small, strong, a, li,option,select,label, form ,div, html, body, span, button, input, textarea {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  font-family: 'Raleway', sans-serif;
+}
+
+// html {
+//     transition: background-color 0.3s, color 0.3s;
+//     background-color: #e9e9e9;
+//   }
 
 
   .loader {

@@ -8,6 +8,8 @@ import item from '../controllers/item';
 import log from '../controllers/product_log';
 import invoice from '../controllers/invoice';
 import dashboard from '../controllers/dashboard';
+import account from '../controllers/account';
+import transaction from '../controllers/transaction';
 const router = Router();
 
 // User routes
@@ -65,6 +67,17 @@ router.put('/invoice/:id', authenticateJWT(['admin']), invoice.update);
 router.get('/dashboard/storeSummary', authenticateJWT(['admin']), dashboard.storeSummary);
 router.get('/dashboard/invoice-summary', authenticateJWT(['admin']), dashboard.invoiceSummary);
 
+router.post('/accounts', authenticateJWT(['admin']), account.create);
+router.get('/accounts', authenticateJWT(['admin']), account.getAll);
+router.get('/accounts/active', authenticateJWT(['admin']), account.active);
+router.get('/accounts/:id', authenticateJWT(['admin']), account.getOne);
+router.put('/accounts/:id', authenticateJWT(['admin']), account.update);
+
+
+router.post('/transactions', authenticateJWT(['admin']), transaction.create);
+router.get('/transactions', authenticateJWT(['admin']), transaction.getAll);
+router.get('/transactions/search', authenticateJWT(['admin']), transaction.search); //GET /api/transactions/search?searchValue=TX123&startDate=2024-01-01&endDate=2024-12-31
+router.get('/transactions/:id', authenticateJWT(['admin']), transaction.getOne);
 
 
 export default router;

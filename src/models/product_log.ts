@@ -10,6 +10,10 @@ const createProductLogModel = (sequelize: Sequelize) => {
     type: {
       type: DataTypes.TEXT,
       allowNull: false
+    },
+    title: {
+      type: DataTypes.TEXT,
+      allowNull: false
     }
   });
 

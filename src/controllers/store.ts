@@ -25,7 +25,7 @@ export default {
             const { error, value } = schema.create.validate(req.body);
             if (error) return res.status(400).json({ error: error.details[0].message });
 
-            value.UserId = req.decodedToken?.id
+            // value.UserId = req.decodedToken?.id
 
             const user = await db.store.create(value);
             res.status(201).json(user);

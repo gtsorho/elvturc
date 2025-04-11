@@ -11,6 +11,12 @@ export default {
 
     try {
       // Total Quantities by Store
+      const dateFilter: any = {};
+      if (startDate && endDate) {
+        dateFilter.createdAt = {
+          [db.Sequelize.Op.between]: [startDate, endDate],
+        };
+      }
       const totalQuantities = await db.item.sum('quantity', {
         include: [
           {
@@ -22,9 +28,7 @@ export default {
           },
         ],
         where: {
-          createdAt: {
-            [db.Sequelize.Op.between]: [startDate, endDate],
-          },
+          ...dateFilter,
         },
       });
 
@@ -43,9 +47,7 @@ export default {
           },
         ],
         where: {
-          createdAt: {
-            [db.Sequelize.Op.between]: [startDate, endDate],
-          },
+          ...dateFilter,
         },
         raw: true,
       });
@@ -54,9 +56,7 @@ export default {
       const invoiceReturns = await db.invoice.sum('amount_paid', {
         where: {
           UserId,
-          createdAt: {
-            [db.Sequelize.Op.between]: [startDate, endDate],
-          },
+          ...dateFilter,
         },
       });
 
@@ -79,6 +79,13 @@ export default {
     try {
       let groupAttributes: ([string, string] | string)[];
       let groupOrder: [string, 'ASC' | 'DESC'][];
+
+      const dateFilter: any = {};
+      if (startDate && endDate) {
+        dateFilter.createdAt = {
+          [db.Sequelize.Op.between]: [startDate, endDate],
+        };
+      }
 
       if (groupBy === 'day') {
         groupAttributes = [
@@ -110,9 +117,7 @@ export default {
           [db.sequelize.fn('SUM', db.sequelize.col('total_items')), 'totalItemsSold'],
         ],
         where: {
-          date: {
-            [db.Sequelize.Op.between]: [startDate, endDate],
-          },
+          ...dateFilter,
         },
         group: groupAttributes.map(attr => attr[1]),
         order: groupOrder,

@@ -10,7 +10,7 @@ import { interval, Subscription } from 'rxjs';
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
 })
-export class MainComponent implements OnDestroy {
+export class MainComponent {
   isAdmin: boolean = false;
   isSidebarOpen: boolean = false;
   isDarkMode: boolean = true;
@@ -23,16 +23,11 @@ export class MainComponent implements OnDestroy {
   }
 
   ngOnInit() {
-    this.checkTokenExpiration();
-    this.verifyAdmin();
-    this.setIntervalCheckToken();
+    // this.checkTokenExpiration();
+    // this.verifyAdmin();
+    // this.setIntervalCheckToken();
   }
 
-  ngOnDestroy() {
-    if (this.tokenCheckSubscription) {
-      this.tokenCheckSubscription.unsubscribe();
-    }
-  }
 
   toggleSidebar(flag: boolean): void {
     this.isSidebarOpen = flag;
@@ -78,6 +73,11 @@ export class MainComponent implements OnDestroy {
       }
     }
     return '';
+  }
+  
+  logout(){
+    this.setCookie('token', '', 0.01);
+    this.router.navigate(['']);
   }
 
   setCookie(cname: string, cvalue: string, exdays: number) {

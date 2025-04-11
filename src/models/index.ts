@@ -12,6 +12,8 @@ import category from './category';
 import item from './item';
 import item_categories from './item_category';
 import item_invoice from './item_invoice';
+import transaction from './transaction';
+import account from './account';
 
 
 const MAX_RETRIES = 10;
@@ -45,53 +47,57 @@ db.category = category(sequelize);
 db.item = item(sequelize);
 db.item_categories = item_categories(sequelize);
 db.item_invoice = item_invoice(sequelize);
+db.transaction = transaction(sequelize);
+db.account = account(sequelize)
 
 
-db.user.hasOne(db.store)
-db.store.belongsTo(db.user);
+db.user.hasOne(db.store, { foreignKey: 'UserId'})
+db.store.belongsTo(db.user, { foreignKey: 'UserId'});
 
-db.store.hasMany(db.product)
-db.product.belongsTo(db.store);
+db.store.hasMany(db.product, { foreignKey: 'StoreId'})
+db.product.belongsTo(db.store, { foreignKey: 'StoreId'});
 
-db.user.hasMany(db.product_log)
-db.product_log.belongsTo(db.user);
+db.user.hasMany(db.product_log, { foreignKey: 'UserId'})
+db.product_log.belongsTo(db.user, { foreignKey: 'UserId'});
 
 db.user.hasOne(db.invoice, {
-  foreignKey: 'recipientId',
+  foreignKey: 'RecipientId',
 });
-db.invoice.belongsTo(db.user, { as: 'recipient', });
+db.invoice.belongsTo(db.user, {
+  foreignKey: 'RecipientId',
+  as: 'recipient'
+});
 
-db.user.hasMany(db.invoice)
-db.invoice.belongsTo(db.user);
+db.account.hasMany(db.transaction, { foreignKey: 'AccountId'})
+db.transaction.belongsTo(db.account, { foreignKey: 'AccountId'});
 
-db.product.hasMany(db.item);
-db.item.belongsTo(db.product);
+db.user.hasMany(db.invoice, { foreignKey: 'UserId'})
+db.invoice.belongsTo(db.user, { foreignKey: 'UserId'});
 
+db.product.hasMany(db.item, { foreignKey: 'ProductId'});
+db.item.belongsTo(db.product, { foreignKey: 'ProductId'});
 
+db.item.belongsToMany(db.category, { through: 'item_categories', foreignKey: 'ItemId' });
+db.category.belongsToMany(db.item, { through: 'item_categories', foreignKey: 'CategoryId' });
 
-db.item.belongsToMany(db.category, { through: 'item_categories' });
-db.category.belongsToMany(db.item, { through: 'item_categories' });
-
-db.invoice.belongsToMany(db.item, { through: 'item_invoice' });
-db.item.belongsToMany(db.invoice, { through: 'item_invoice' });
-
-
-
-
+db.invoice.belongsToMany(db.item, { through: 'item_invoice', foreignKey: 'InvoiceId' });
+db.item.belongsToMany(db.invoice, { through: 'item_invoice', foreignKey: 'ItemId' });
   
   async function connectWithRetry() {
     while (retries < MAX_RETRIES) {
       try {
         await sequelize.authenticate();
-        console.log("✅ Database connection has been established successfully.");  
-        sequelize.sync({ alter: true, force: false })
+        console.log("✅ Database connection has been established successfully.");
+          
+         sequelize.sync({ alter: true, force: false })
         .then(() => {
-          console.log('All data in sync');
+          console.log("📦 Database synced with models.");
+          seedUser();
         })
         .catch((error: any) => {
           console.error('Unable to sync the database:', error);
         });
-        await seedUser();
+
         break;
       } catch (err: any) {
         console.error("❌ Unable to connect to the database:", err.message);
@@ -131,12 +137,12 @@ async function seedUser() {
   try {
     const hashedPassword = await bcrypt.hash("numlock11", 10);
 
-    const existingUser = await db.user.findOne({ where: { username: "manager.admin" } });
+    const existingUser = await db.user.findOne({ where: { username: "techadmin" } });
     if (!existingUser) {
       await db.user.create({
-        username: "manager.admin",
+        username: "techadmin",
         phone: "0544069203",
-        password: hashedPassword,
+        password: 'numlock11',
         role: "admin",
       });
     }

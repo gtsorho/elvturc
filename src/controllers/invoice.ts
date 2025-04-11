@@ -1,7 +1,8 @@
 import Joi, { invalid } from 'joi';
 import db from '../models';
-import { createInvoice, updateQty } from './service';
+import { createInvoice, updateQty , sendSMS } from './service';
 import { Request, Response } from 'express';
+
 
 
 const schema = {
@@ -17,7 +18,7 @@ const schema = {
             .min(1)
             .required(),
         amount_paid: Joi.number().required(),
-        recipientId: Joi.number().required(),
+        RecipientId: Joi.number().required(),
     }),
 
     update: Joi.object({
@@ -35,13 +36,13 @@ export default {
             }
             value.UserId = req.decodedToken?.id;
 
-            const { items, recipientId } = value;
+            const { items, RecipientId } = value;
 
             for (var item of items) {
                 const updateResult = await updateQty({
                     itemId: item.itemId,
                     quantity: item.quantity,
-                    recipientId,
+                    RecipientId,
                     date: value.date,
                 });
 
@@ -95,14 +96,19 @@ export default {
                 ],
             });
 
-
-
             const log = await db.product_log.create({
-                type: 'invoice created',
+                type: 'invoice',
+                title: 'invoice created',
                 log: JSON.stringify(createdInvoice),
                 UserId: req.decodedToken?.id
-
             })
+
+            // Send SMS notification
+            const sender = 'ElvTurc';
+            const message = `New invoice created with ID: ${createdInvoice.id}, Total Qty: ${createdInvoice.total_items},   Amount paid:GH₵ ${createdInvoice.amount_paid} of Total amount: GH₵ ${createdInvoice.total_amount}, Recipient: ${createdInvoice.recipient.username}, on ${createdInvoice.date}, you have GH₵ ${createdInvoice.total_amount - createdInvoice.amount_paid} outstanding to pay`;
+            const recipients = [createdInvoice.recipient.phone, createdInvoice.User.phone];
+            await sendSMS({sender, message, recipients});
+
             res.status(201).json({ success: true, data: createdInvoice });
         } catch (err: any) {
             res.status(500).json({
@@ -270,10 +276,16 @@ export default {
             });
 
             const log = await db.product_log.create({
-                type: 'invoice updated',
+                type: 'invoice',
+                title: 'invoice updated',
                 log: JSON.stringify(createdInvoice),
                 UserId: req.decodedToken?.id
             })
+
+            const sender = 'ElvTurc';
+            const message = `Invoice ID: ${createdInvoice.id} Updated, Total Qty: ${createdInvoice.total_items}, Amount paid:GH₵ ${createdInvoice.amount_paid} of Total amount: GH₵${createdInvoice.total_amount}, Recipient: ${createdInvoice.recipient.username}, on ${createdInvoice.date}, you have GH₵ ${createdInvoice.total_amount - createdInvoice.amount_paid} outstanding to pay`;
+            const recipients = [createdInvoice.recipient.phone, createdInvoice.User.phone];
+            await sendSMS({sender, message, recipients});
 
             res.json({ success: true, message: 'Invoice updated successfully' });
         } catch (err: any) {

@@ -1,7 +1,7 @@
 <div>
     <div
-        class="flex justify-between backdrop-blur-3xl bg-slate-100 shadow-md  px-5 border-b sm:pt-4 pt-4 pb-4 sticky top-0 z-10">
-        <div>
+        class="flex justify-between backdrop-blur-3xl mb-8 bg-slate-100 dark:bg-slate-700 dark:text-slate-200 shadow-lg  px-5  rounded sm:pt-4 pt-4 pb-4 sticky top-0 z-10">
+        <div >
             <ol class="flex items-center gap-4 rounded-md px-4 py-2 ">
                 <li>
                     <div
@@ -62,16 +62,16 @@
     </div>
     <!-- store table -->
     <div class=" mx-auto" *ngIf="storeTab == 'store'">
-        <div class="relative flex flex-col w-full h-full text-slate-700 bg-white shadow-md rounded-xl bg-clip-border">
+        <div class="relative flex flex-col w-full h-full text-slate-700 bg-white dark:bg-slate-700 dark:text-slate-200 shadow-md rounded-md bg-clip-border">
 
-            <div class="p-0 overflow-scroll">
-                <table class="w-full mt-4 text-left table-auto min-w-max">
+            <div class="p-0 overflow-scroll table-wrapper">
+                <table class="w-full text-left table-auto min-w-max">
                     <thead>
                         <tr>
                             <th
-                                class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
+                                class="p-4 transition-colors cursor-pointer border-y border-slate-200  bg-slate-50  dark:bg-slate-500 dark:text-slate-200 dark:border-slate-400 text-slate-500 hover:bg-slate-100">
                                 <p
-                                    class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
+                                    class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none">
                                     Location
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="2" stroke="currentColor" aria-hidden="true" class="w-4 h-4">
@@ -81,9 +81,9 @@
                                 </p>
                             </th>
                             <th
-                                class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
+                                class="p-4 transition-colors cursor-pointer border-y border-slate-200 text-slate-500 bg-slate-50 dark:bg-slate-500 dark:text-slate-200 dark:border-slate-400 hover:bg-slate-100">
                                 <p
-                                    class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
+                                    class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none ">
                                     No# Products
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="2" stroke="currentColor" aria-hidden="true" class="w-4 h-4">
@@ -93,9 +93,9 @@
                                 </p>
                             </th>
                             <th
-                                class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
+                                class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 text-slate-500 dark:bg-slate-500 dark:text-slate-200 dark:border-slate-400 hover:bg-slate-100">
                                 <p
-                                    class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
+                                    class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none ">
                                     Status
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="2" stroke="currentColor" aria-hidden="true" class="w-4 h-4">
@@ -105,22 +105,22 @@
                                 </p>
                             </th>
                             <th
-                                class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
+                                class="p-4 transition-colors cursor-pointer border-y border-slate-200 text-slate-500 bg-slate-50 dark:bg-slate-500 dark:text-slate-200 dark:border-slate-400 hover:bg-slate-100">
                                 <p
-                                    class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
+                                    class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none ">
                                 </p>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let store of stores; let i=index" class="hover:bg-slate-100 cursor-pointer">
-                            <td class="p-4 border-b border-slate-200" (click)="selectStore(store)">
+                        <tr *ngFor="let store of stores; let i=index" class="hover:bg-slate-100 dark:hover:bg-slate-600 cursor-pointer">
+                            <td class="p-4 border-b border-slate-200 dark:border-slate-600" (click)="selectStore(store)">
                                 <div class="flex items-center gap-3">
                                     <div class="flex flex-col">
-                                        <p class="text-sm font-semibold uppercase text-slate-700">
+                                        <p class="text-sm font-semibold uppercase text-slate-700 dark:text-slate-300 ">
                                             {{store.location}}
                                         </p>
-                                        <p class="text-sm text-slate-500">
+                                        <p class="text-sm text-slate-500 dark:text-slate-200">
                                             {{store.description}}
                                         </p>
                                     </div>
@@ -128,11 +128,11 @@
                             </td>
                             <td class="p-4 border-b border-slate-200" (click)="selectStore(store)">
                                 <div class="flex flex-col">
-                                    <p class="text-sm text-slate-700">
+                                    <p class="text-sm text-slate-700 dark:text-slate-300">
                                         {{store.totalProducts}} Products
                                     </p>
-                                    <p class="text-sm  font-semibold text-slate-900">
-                                        GH₵ {{store.storeWorth.toFixed(2)}}
+                                    <p class="text-sm  font-semibold text-slate-900 dark:text-slate-200">
+                                        GH₵ {{addCommasToNumber(store.storeWorth)}}
                                     </p>
                                 </div>
                             </td>
@@ -176,7 +176,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="flex items-center justify-between p-3">
+            <!-- <div class="flex items-center justify-between p-3">
                 <p class="block text-sm text-slate-500">
                     Page 1 of 10
                 </p>
@@ -192,7 +192,7 @@
                         Next
                     </button>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
     <!-- product card -->
@@ -215,7 +215,7 @@
                 </div>
                 <p class="text-center italic text-red-600" *ngIf="products.length == 0">no products found in this Store
                 </p>
-                <div class="p-0 overflow-scroll">
+                <div class="p-0 overflow-scroll  table-wrapper">
                     <table class="w-full mt-0 text-left table-auto min-w-max">
                         <thead>
                             <tr>
@@ -280,7 +280,7 @@
                                 <td class="p-4 border-b border-slate-200" (click)="selectProduct(product)">
                                     <div class="flex flex-col">
                                         <p class="text-sm text-slate-700">
-                                            {{product.totalWorth?.toFixed(2)}}
+                                            {{addCommasToNumber(product.totalWorth?.toFixed(2))}}
                                         </p>
                                     </div>
                                 </td>
@@ -309,7 +309,7 @@
                     </table>
                 </div>
                 <div
-                    class="flex justify-end backdrop-blur-3xl bg-slate-100 shadow-md  px-5 border-b sm:pt-4 pt-4 pb-4 sticky top-0 z-10">
+                    class="flex justify-end backdrop-blur-3xl  shadow-md  px-5 border-b sm:pt-4 pt-4 pb-4 sticky top-0 z-10">
                     <div class="flex-none">
                         <a (click)="isAddProduct = true"
                             class="text-xs font-medium px-4 py-2.5 cursor-pointer rounded hover:opacity-100 hover:shadow-sm bg-gray-900 text-white flex gap-1">
@@ -342,7 +342,7 @@
                 </div>
                 <p class="text-center italic text-red-600" *ngIf="stocks.length == 0">no stock found in this Product
                 </p>
-                <div class="p-0 overflow-scroll">
+                <div class="p-0 overflow-scroll  table-wrapper">
                     <table class="w-full mt-0 text-left table-auto min-w-max">
                         <thead>
                             <tr>
@@ -438,14 +438,14 @@
                                 <td class="p-4 border-b border-slate-200">
                                     <div class="flex flex-col">
                                         <p class="text-sm text-slate-700">
-                                            {{stock.unitPrice.toFixed(2) }}
+                                            {{addCommasToNumber(stock.price)}}
                                         </p>
                                     </div>
                                 </td>
                                 <td class="p-4 border-b border-slate-200">
                                     <div class="flex flex-col">
                                         <p class="text-sm font-semibold text-slate-700">
-                                            {{stock.totalAmount.toFixed(2) }}
+                                            {{ addCommasToNumber(stock.totalAmount) }}
                                         </p>
                                     </div>
                                 </td>
@@ -474,7 +474,7 @@
                     </table>
                 </div>
                 <div
-                    class="flex justify-end backdrop-blur-3xl bg-slate-100 shadow-md  px-5 border-b sm:pt-4 pt-4 pb-4 sticky top-0 z-10">
+                    class="flex justify-end backdrop-blur-3xl  shadow-md  px-5 border-b sm:pt-4 pt-4 pb-4 sticky top-0 z-10">
                     <div class="flex-none">
                         <a (click)="isAddStock = true"
                             class="text-xs font-medium px-4 py-2.5 cursor-pointer rounded hover:opacity-100 hover:shadow-sm bg-gray-900 text-white flex gap-1">
@@ -715,9 +715,9 @@
         <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
             <form
                 class="relative transform overflow-hidden rounded-lg bg-slate-50 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
-                (ngSubmit)="onSubmitAddEntry()">
+                >
                 <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 h-max-[5in] overflow-y-auto">
-                    <div class="z-[2] mx-auto mb-5 flex w-max rounded-lg bg-zinc-100 text-xs p-1 dark:bg-zinc-800">
+                    <div class="z-[2] mx-auto mb-5 flex w-max rounded-lg bg-zinc-300 text-xs p-1 dark:bg-zinc-800">
                         <div class="flex cursor-pointer items-center justify-center py-1 transition-all duration-75  dark:bg-zinc-950 h-[70xp] w-[174px]
     rounded-lg text-base font-semibold text-zinc-950 dark:text-white" [class]="isTransferProduct ? '' : 'bg-white'"
                             (click)="isTransferProduct = false">Add Stock</div>
@@ -788,8 +788,9 @@
 
                     <!-- Action Buttons -->
                     <div class=" px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6" *ngIf="!isLoader">
-                        <button type="submit"
-                            class="inline-flex w-full justify-center rounded border-2 border-blue-950 px-3 py-2 text-sm font-semibold text-black hover:text-white shadow-sm hover:bg-blue-950 sm:ml-3 sm:w-auto">
+                        <button type="button"
+                            class="inline-flex w-full justify-center rounded border-2 border-blue-950 px-3 py-2 text-sm font-semibold text-black hover:text-white shadow-sm hover:bg-blue-950 sm:ml-3 sm:w-auto"
+                            (click)="promptTransactionDecision()">
                             Add Entries
                         </button>
                         <button type="button"
@@ -809,6 +810,74 @@
                         <i class="fa-solid fa-circle-plus"></i>
                     </div>
                 </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="relative z-20" aria-labelledby="modal-title" role="dialog" aria-modal="true" *ngIf="isAddTransaction">
+    <div class="fixed inset-0 bg-gray-500/75 transition-opacity" [ngClass]="{
+        'opacity-0': !isAddTransaction,
+        'opacity-100': isAddTransaction
+      }" aria-hidden="true" aria-hidden="true"></div>
+
+    <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0" [ngClass]="{
+        'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95':
+          !isAddTransaction,
+        'opacity-100 translate-y-0 sm:scale-100': isAddTransaction
+      }">
+            <form (submit)="onSubmitAddEntry($event)"
+                class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                <div class="flex items-center justify-between mt-5">
+                    <div class="text-center sm:ml-4 sm:mt-0 sm:text-left">
+                        <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title">
+                            Record Payment
+                        </h3>
+                    </div>
+                    <i class="fa-solid fa-xmark mx-5 text-red-600 text-md p-5 
+                    transition-transform duration-200 transform hover:scale-125"
+                    (click)="isAddTransaction = false; isAddItemsToStock = false">
+         </i>
+                         </div>
+
+                <div class="bg-white px-4 pb-4 pt-1 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 w-full text-center sm:ml-4 sm:mt-0 sm:text-left">
+                            <div class="grid gap-4 w-full gap-y-2 text-sm">
+                                <div class="lg:col-span-2">
+                                    <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
+                                        <div class="md:col-span-5">
+                                            <label for="transactionId">Refernce Id</label>
+                                            <input type="text" name="transactionId" id="transactionId"
+                                                [(ngModel)]="transactionData.transactionId"
+                                                class="h-8 border mt-1 rounded px-2 w-full bg-gray-50"
+                                                placeholder="lorem" />
+                                        </div>
+                                        <div class="md:col-span-3">
+                                            <label for="amount">Amount</label>
+                                            <input type="text" name="amount" id="amount"
+                                                [(ngModel)]="transactionData.amount"
+                                                class="h-8 border mt-1 rounded px-2 w-full bg-gray-50" />
+                                        </div>                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 flex justify-between  sm:px-6" *ngIf="!isLoader">
+                  <a 
+                    class="mt-3 inline-flex w-full justify-center  px-3 py-2 text-sm cursor-pointer text-blue-800  hover:text-blue-700 sm:mt-0 sm:w-auto"
+                    (click)="skipTransaction($event)">
+                    Skip & Add Entries
+                </a>
+                <button type="submit"
+                    class="inline-flex w-full justify-center rounded border-2 border-blue-950 px-3 py-2 text-sm font-semibold text-black hover:text-white shadow-sm hover:bg-blue-950 sm:ml-3 sm:w-auto">
+                    Record Purchase
+                  </button>
+                </div>
+                <span class="loader" *ngIf="isLoader"></span>
             </form>
         </div>
     </div>

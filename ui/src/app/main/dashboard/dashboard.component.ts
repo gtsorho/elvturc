@@ -70,6 +70,7 @@ export class DashboardComponent {
       moment().subtract(1, 'month').endOf('month'),
     ],
   };
+  hasLoadedInitially = false;
 
   constructor(private dashboardService: DashboardService, private cdr: ChangeDetectorRef) {
     this.chartOptions = {
@@ -102,23 +103,22 @@ export class DashboardComponent {
   }
 
   ngOnInit() {
-    this.chosenDate();
+      this.getStoreSummary('', '')
+      this.loadData('', '')
+
+      setTimeout(() => this.hasLoadedInitially = true, 100);
   }
 
-
-
     chosenDate() {
-      this.getStoreSummary()
-      this.loadData()
+      if (!this.hasLoadedInitially) return;
+      this.getStoreSummary(this.selected.startDate, this.selected.endDate)
+      this.loadData(this.selected.startDate, this.selected.endDate)
     }
 
  
-    getStoreSummary(){
-      this.dashboardService.getStoreSummary(this.selected.startDate, this.selected.endDate).subscribe((summary) => {
+    getStoreSummary(startDate:any, endDate:any) {
+      this.dashboardService.getStoreSummary(startDate, endDate).subscribe((summary) => {
         this.storeSummary = summary;
-        console.log(this.storeSummary);
-        console.log(this.storeSummary.stockWorth || this.storeSummary.invoiceReturns != null || this.storeSummary.totalQuantities != null)
-
       });
     }
 
@@ -126,11 +126,10 @@ export class DashboardComponent {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  loadData() {
+  loadData(startDate:any, endDate:any) {
     this.dashboardService
-      .getInvoiceSummary(this.selected.startDate, this.selected.endDate)
+      .getInvoiceSummary(startDate, endDate)
       .subscribe((response) => {
-        console.log(response);
         const monthNames = [
           "Jan", "Feb", "Mar", "Apr", "May", "Jun",
           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"

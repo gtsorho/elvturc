@@ -1,4 +1,4 @@
-<section class="relative h-[6in] flex flex-col justify-center  overflow-auto">
+<section class="relative max-h-[85vh] overflow-y-auto flex flex-col justify-center">
     <div class="w-full max-w-6xl mx-auto">
         <div class="flex flex-col justify-center divide-y divide-slate-200 [&>*]:py-2">
 
@@ -18,21 +18,21 @@
                             </svg>
                         </div>
                         <!-- Card -->
-                        <div *ngIf="isArray(record)" class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded border border-slate-200 shadow">
+                        <div *ngIf="record.type == 'stock'" class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded border border-slate-200 shadow">
                             <div class="flex items-center justify-between space-x-2 mb-1">
-                                <div class="font-bold text-slate-900">{{record}}</div>
-                                <time class="text-xs font-medium text-indigo-500">{{ convertDate(record[0].data.date) }}</time>
+                                <div class="font-bold text-slate-900">{{record.title}}</div>
+                                <time class="text-xs font-medium text-indigo-500">{{ convertDate(record.date) }}</time>
                             </div>
                             <div class="text-slate-500">
-                                <p *ngIf="record[0].data.recipientStore">
-                                  Stock transferred  from <span class="font-semibold text-slate-800 uppercase">{{ record[0].data.storeId.location }}</span>  to  <span class="font-semibold text-slate-800 uppercase">{{ record[0].data.recipientStore.location }}</span> 
+                                <p *ngIf="record.recipientStore">
+                                  Stock transferred  from <span class="font-semibold text-slate-800 uppercase">{{ record.storeId.location }}</span>  to  <span class="font-semibold text-slate-800 uppercase">{{ record.recipientStore.location }}</span> 
                                 </p>
-                                <p *ngIf="!record[0].data.recipientStore">
-                                   Stock Added <span class="font-semibold text-slate-800 uppercase">{{ record[0].data.storeId.location }}</span>
+                                <p *ngIf="!record.recipientStore">
+                                   Stock Added <span class="font-semibold text-slate-800 uppercase">{{ record.store.location }}</span>
                                  </p>
                             </div>
                         </div>
-                        <div *ngIf="!isArray(record)" class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded border border-slate-200 shadow">
+                        <div *ngIf="record.type == 'invoice'" class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded border border-slate-200 shadow">
                             <div class="flex items-center justify-between space-x-2 mb-1">
                                 <div class="font-bold text-slate-900">Stock Transit</div>
                                 <time class="text-xs font-medium text-indigo-500">{{ convertDate(record.date) }}</time>

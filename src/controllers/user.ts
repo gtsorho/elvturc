@@ -10,18 +10,18 @@ const schema = {
     create: Joi.object({
         phone: Joi.string().required(),
         username: Joi.string().required(),
-        password: Joi.string().min(6).required(),
+        password: Joi.string().min(6).optional().allow(null),
         role: Joi.string().required(),
-        confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
+        confirmPassword: Joi.string().valid(Joi.ref('password')).allow(null).optional(),
     }),
 
     update: Joi.object({
         id:Joi.number(),
         phone: Joi.string(),
         username: Joi.string(),
-        password: Joi.string().min(6),
+        password: Joi.string().min(6).allow(null),
         role: Joi.string(),
-        confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
+        confirmPassword: Joi.string().valid(Joi.ref('password')).allow(null).optional(),
     })
 };
 

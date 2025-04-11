@@ -1,3 +1,4 @@
+
 .table-wrapper {
     max-height: 70vh; /* Adjust as needed */
     overflow-y: auto;
@@ -15,11 +16,8 @@
   thead th {
     position: sticky;
     top: 0;
-    background-color: #f8fafc;
     z-index: 10;
     text-align: left;
-    padding: 1rem;
-    border-bottom: 1px solid #cbd5e1;
   }
   
   /* Optional: styling for better consistency in dark mode */

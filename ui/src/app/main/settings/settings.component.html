@@ -23,23 +23,23 @@
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="m1 9 4-4-4-4" />
                         </svg>
-                        <a href="">Staff</a>
+                        <a href="">Accounts</a>
                     </div>
                 </li>
             </ol>
         </div>
-        <div class="flex-none">
-            <a (click)="isAddStaff = true"
+        <div class="flex-none ">
+            <a (click)="isAddAccount = true"
                 class="text-xs font-medium px-4 py-2.5 cursor-pointer rounded hover:opacity-100 hover:shadow-sm bg-gray-900 text-white flex gap-1">
                 <span
                     class="flex items-center space-x-2 rounded-md group hover:rounded-full transition hover:text-neutral-50/75"><span>Add
-                        Staff</span></span>
+                        Account</span></span>
             </a>
         </div>
     </div>
-    <div class=" mx-auto">
+    <div class=" mx-auto mt-5">
 
-        <div class="relative flex flex-col w-full h-full text-slate-700 bg-white shadow-md rounded-xl bg-clip-border">
+        <div class="relative flex flex-col w-full h-full text-slate-700 bg-white shadow-md rounded-md bg-clip-border">
 
             <div class="p-0 overflow-scroll table-wrapper">
                 <table class="w-full mt-4 text-left table-auto min-w-max">
@@ -49,7 +49,7 @@
                                 class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                                 <p
                                     class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
-                                    Username
+                                    Title
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="2" stroke="currentColor" aria-hidden="true" class="w-4 h-4">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -61,7 +61,7 @@
                                 class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                                 <p
                                     class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
-                                    Phone
+                                    Description
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="2" stroke="currentColor" aria-hidden="true" class="w-4 h-4">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -73,12 +73,19 @@
                                 class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                                 <p
                                     class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                                    Role
+                                    Opening Balance
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="2" stroke="currentColor" aria-hidden="true" class="w-4 h-4">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
                                     </svg>
+                                </p>
+                            </th>
+                            <th
+                                class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
+                                <p
+                                    class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
+                                    Active
                                 </p>
                             </th>
                             <th
@@ -90,12 +97,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let staff of staffs">
+                        <tr *ngFor="let account of accounts">
                             <td class="p-4 border-b border-slate-200">
                                 <div class="flex items-center gap-3">
                                     <div class="flex flex-col">
                                         <p class="text-sm font-semibold text-slate-700">
-                                            {{staff.username}}
+                                            {{account.title}}
                                         </p>
                                     </div>
                                 </div>
@@ -103,17 +110,24 @@
                             <td class="p-4 border-b border-slate-200">
                                 <div class="flex flex-col">
                                     <p class="text-sm font-semibold text-slate-700">
-                                        {{staff.phone}}
+                                        {{account.description}}
                                     </p>
                                 </div>
                             </td>
                             <td class="p-4 border-b border-slate-200">
                                 <div class="w-max">
                                     <div
-                                        class="relative grid items-center px-2 py-1 font-sans text-xs font-bold text-green-900 uppercase rounded-md select-none whitespace-nowrap bg-green-500/20">
-                                        <span class="">{{staff.role}}</span>
+                                        class="relative grid items-center px-2 py-1 font-sans text-xs font-bold  uppercase rounded-md select-none whitespace-nowrap">
+                                        <span class="">{{account.openingBalance}}</span>
                                     </div>
                                 </div>
+                            </td>
+                            <td class="p-4 border-b border-slate-200">
+                                <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                                    <input type="checkbox" [checked]="account.active" (change)="toggleActive(account)" name="toggle" id="toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                                    <label for="toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                                </div>
+                                {{account.active}}
                             </td>
                             <td class="p-4 border-b border-slate-200">
                                 <button
@@ -155,19 +169,24 @@
 </div>
 
 
-<div class="relative z-20" aria-labelledby="modal-title" role="dialog" aria-modal="true" *ngIf="isAddStaff">
+<div class="relative z-20" aria-labelledby="modal-title" role="dialog" aria-modal="true" *ngIf="isAddAccount">
     <div class="fixed inset-0 bg-gray-500/75 transition-opacity" [ngClass]="{
-        'opacity-0': !isAddStaff,
-        'opacity-100': isAddStaff
+        'opacity-0': !isAddAccount,
+        'opacity-100': isAddAccount
       }" aria-hidden="true" aria-hidden="true"></div>
 
     <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0" [ngClass]="{
-            'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95': !isAddStaff,
-            'opacity-100 translate-y-0 sm:scale-100': isAddStaff
+            'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95': !isAddAccount,
+            'opacity-100 translate-y-0 sm:scale-100': isAddAccount
           }">
-            <form (submit)="createStaff($event)"
+            <form (submit)="createAccount($event)"
                 class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                    <div class="flex items-center justify-center mt-5">
+                        <div class=" text-center sm:ml-4 sm:mt-0 sm:text-left">
+                            <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title">Create Account</h3>
+                        </div>
+                    </div>
                 <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
                         <div class="mt-3 w-full text-center sm:ml-4 sm:mt-0 sm:text-left">
@@ -176,41 +195,31 @@
                                 <div class="lg:col-span-2">
                                     <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
                                         <div class="md:col-span-5">
-                                            <label for="username">Username</label>
+                                            <label for="username">Account Label</label>
                                             <input type="text" name="username" id="username"
-                                                [(ngModel)]="staffData.username"
+                                                [(ngModel)]="accountData.title"
                                                 class="h-10 border mt-1 rounded px-2 w-full bg-gray-50"
                                                 placeholder="johnDoe" value="" />
                                         </div>
                                         <div class="md:col-span-5">
-                                            <label for="phone">Phone</label>
-                                            <input type="text" name="phone" id="phone" [(ngModel)]="staffData.phone"
+                                            <label for="description">Description</label>
+                                            <input type="text" name="description" id="description" [(ngModel)]="accountData.description"
                                                 class="h-10 border mt-1 rounded px-2 w-full bg-gray-50"
-                                                placeholder="0544XX XXXX"  />
+                                                placeholder="lorem"  />
+                                        </div>  
+                                        <div class="md:col-span-5">
+                                            <label for="openingBalance">Opening Balance</label>
+                                            <input type="text" name="openingBalance" id="openingBalance" [(ngModel)]="accountData.openingBalance"
+                                                class="h-10 border mt-1 rounded px-2 w-full bg-gray-50"
+                                                  />
                                         </div>
                                         <div class="md:col-span-5">
-                                            <label for="role">Role</label>
-                                            <select type="text" name="role" id="role" [(ngModel)]="staffData.role"
-                                                class="h-10 border mt-1 rounded px-2 w-full bg-gray-50"
-                                                placeholder="Main Warehouse" >
-                                                <option value="admin">Admin</option>
-                                                <option value="manager">Manager</option>
-                                                <option value="sales">Sales</option>
-                                            </select>
-                                        </div>
-                                        <div class="md:col-span-5">
-                                            <label for="password">password</label>
-                                            <input type="password" name="password" id="password"
-                                                [(ngModel)]="staffData.password"
-                                                class="h-10 border mt-1 rounded px-2 w-full bg-gray-50"
-                                                placeholder="*********" value="" />
-                                        </div>
-                                        <div class="md:col-span-5">
-                                            <label for="confirmPassword">Confirm Password</label>
-                                            <input type="password" name="confirmPassword" id="confirmPassword"
-                                                [(ngModel)]="staffData.confirmPassword"
-                                                class="h-10 border mt-1 rounded px-2 w-full bg-gray-50"
-                                                placeholder="**********" value="" />
+                                            <label for="openingBalance block">Set as active</label>
+                                            <br>
+                                            <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                                                <input type="checkbox" [(ngModel)]="accountData.active" name="toggle" id="toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                                                <label for="toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                                            </div>
                                         </div>
 
                                     </div>
@@ -223,10 +232,10 @@
                 <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6" *ngIf="!isLoader">
                     <button type="submit"
                         class="inline-flex w-full justify-center rounded border-2 border-blue-950 px-3 py-2 text-sm font-semibold text-black hover:text-white shadow-sm hover:bg-blue-950 sm:ml-3 sm:w-auto">Create
-                        User </button>
+                        Account </button>
                     <button type="button"
                         class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                        (click)="isAddStaff = false">Cancel</button>
+                        (click)="isAddAccount = false">Cancel</button>
                 </div>
                 <span class="loader" *ngIf="isLoader"></span>
 
@@ -235,18 +244,18 @@
     </div>
 </div>
 
-<!-- <div class="relative z-20" aria-labelledby="modal-title" role="dialog" aria-modal="true" *ngIf="isAddStaff">
+<!-- <div class="relative z-20" aria-labelledby="modal-title" role="dialog" aria-modal="true" *ngIf="isAddAccount">
     <div class="fixed inset-0 bg-gray-500/75 transition-opacity" [ngClass]="{
-        'opacity-0': !isAddStaff,
-        'opacity-100': isAddStaff
-      }" [@fadeTransition]="isAddStaff ? 'enter' : 'leave'" aria-hidden="true" aria-hidden="true"></div>
+        'opacity-0': !isAddAccount,
+        'opacity-100': isAddAccount
+      }" [@fadeTransition]="isAddAccount ? 'enter' : 'leave'" aria-hidden="true" aria-hidden="true"></div>
 
     <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"  [ngClass]="{
-            'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95': !isAddStaff,
-            'opacity-100 translate-y-0 sm:scale-100': isAddStaff
+            'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95': !isAddAccount,
+            'opacity-100 translate-y-0 sm:scale-100': isAddAccount
           }"
-          [@scaleTransition]="isAddStaff ? 'enter' : 'leave'">
+          [@scaleTransition]="isAddAccount ? 'enter' : 'leave'">
             <div
                 class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                 <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
@@ -347,7 +356,7 @@
                     <button type="button"
                         class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Deactivate</button>
                     <button type="button"
-                        class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto" (click)="isAddStaff = false">Cancel</button>
+                        class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto" (click)="isAddAccount = false">Cancel</button>
                 </div>
             </div>
         </div>

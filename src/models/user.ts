@@ -21,7 +21,13 @@ type UserModelStatic = typeof Model & {
 export default (sequelize: Sequelize) => {
   const User :any= <UserModelStatic>sequelize.define('User', {
     username: DataTypes.STRING,
-    password: DataTypes.STRING,
+    password: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        len: [6, 100]
+      }
+    },
     phone: {
       type: DataTypes.STRING,
       defaultValue: "0544069203"

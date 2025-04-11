@@ -40,6 +40,18 @@ interface stockData {
   updatedAt?: Date
 }
 
+interface transactionData {
+  date: string;
+  type: string;
+  amount: number;
+  transactionId: string;
+  depositor?: string | null;
+  bank?: string | null;
+  narration: string;
+  balance: number;
+  id?:number;
+}
+
 @Component({
   selector: 'app-store',
   imports: [CommonModule, FormsModule, StoreReceiptComponent],
@@ -59,6 +71,7 @@ export class StoreComponent {
       day: 'numeric',
     });
   }
+
   storeData: StoreData = {
     UserId: 1,
     location: '',
@@ -79,6 +92,17 @@ export class StoreComponent {
     ProductId: 0,
     quantity: 0,
     unitPrice: 0,
+  }
+
+  transactionData: transactionData = {
+    date: new Date().toISOString().split('T')[0],
+    type: 'debit',
+    amount: 0,
+    transactionId: '',
+    depositor: null,
+    bank: null,
+    narration: '',
+    balance: 0,    
   }
 
   staffs: any = [];
@@ -108,6 +132,8 @@ export class StoreComponent {
   isUpdateStore: boolean = false
   isUpdateProduct: boolean = false
   isUpdateStock: boolean = false
+  isAddTransaction: boolean = false
+  shouldSubmitStockAfterTransaction = false;
 
   constructor(private loaderService: LoaderService, private storeService: StoreService, private staffService: StaffService) { }
 
@@ -120,7 +146,12 @@ export class StoreComponent {
   createStore(e: any) {
     e.preventDefault();
     this.isLoader = true;
-    axios.post(`${this.loaderService.baseUrl}/stores`, this.storeData,
+    const data = {
+      UserId: this.storeData.UserId,
+      location: this.storeData.location,
+      description: this.storeData.description,
+    }
+    axios.post(`${this.loaderService.baseUrl}/stores`, data,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -145,6 +176,93 @@ export class StoreComponent {
       })
       .catch(error => {
         console.log(error);
+      });
+  }
+
+  createTransaction() {
+    this.isLoader = true;
+    this.transactionData.type = 'debit';
+    this.transactionData.date = this.date;
+    this.transactionData.narration = this.storeLog;
+  
+    axios.post(`${this.loaderService.baseUrl}/transactions`, this.transactionData, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.getCookie('token')}`,
+      }
+    })
+      .then(response => {
+        this.transactionData = {
+          date: new Date().toISOString().split('T')[0],
+          type: '',
+          amount: 0,
+          transactionId: '',
+          depositor: '',
+          bank: '',
+          narration: '',
+          balance: 0
+        };
+        this.isLoader = false;
+        this.isAddTransaction = false;
+        this.isAddItemsToStock = false;
+      })
+      .catch(error => {
+        console.log(error);
+        this.isLoader = false;
+      });
+  }  
+
+  onSubmitAddEntry(e:any) {
+    e.preventDefault();
+    if (this.stockEntires.some((entry: any) => !entry.ProductId || !entry.CategoryId || !entry.quantity)) {
+      alert('Please fill in all fields.');
+      return;
+    }
+
+    const requests = this.stockEntires.map((entry: any) => {
+      return axios.put(`${this.loaderService.baseUrl}/items/qty`, {
+        StoreId: this.selectedStore.id,
+        date: this.date,
+        recipientStoreId: this.destinationStore,
+        ProductId: entry.ProductId,
+        CategoryId: entry.CategoryId,
+        quantity: entry.quantity,
+      },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.getCookie('token')}`,
+          }
+        });
+    });
+
+    Promise.all(requests)
+      .then((responses) => {
+        const extractedData = this.transformData(responses.map((response: any) => response.data)) 
+
+        axios.post(`${this.loaderService.baseUrl}/store_log`, { log: JSON.stringify(extractedData), type:'stock', title: 'Items added to stock' },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${this.getCookie('token')}`,
+            }
+          }
+        )
+          .then(response => {
+            this.storeLog = JSON.stringify(extractedData);
+          this.createTransaction(); // ✅ call before reset
+          this.isReceipt = true;
+
+          this.resetForm(); // ✅ now it's safe to reset
+          this.isAddItemsToStock = false;
+          this.getStores();
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      })
+      .catch((error) => {
+        console.error('Error submitting entries:', error);
       });
   }
 
@@ -395,8 +513,22 @@ export class StoreComponent {
     });
   }
 
+  addCommasToNumber(value: number | string | undefined): string {
+    const num = Number(value);
+    if (isNaN(num)) return '0.00'; // fallback for invalid values
+    return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
   openModal() {
     this.isAddStore = true;
+  }
+  promptTransactionDecision() {
+    this.isAddItemsToStock = false
+    this.isAddTransaction = true;
+  }
+
+  skipTransaction(e:any) {
+    this.isAddTransaction = false;
+    this.onSubmitAddEntry(e);
   }
 
   closeModal() {
@@ -415,65 +547,11 @@ export class StoreComponent {
     console.log('Updated Stock Entries:', this.stockEntires);
   }
 
-  onSubmitAddEntry() {
-    if (this.stockEntires.some((entry: any) => !entry.ProductId || !entry.CategoryId || !entry.quantity)) {
-      alert('Please fill in all fields.');
-      return;
-    }
-
-    const requests = this.stockEntires.map((entry: any) => {
-      return axios.put(`${this.loaderService.baseUrl}/items/qty`, {
-        StoreId: this.selectedStore.id,
-        date: this.date,
-        recipientStoreId: this.destinationStore,
-        ProductId: entry.ProductId,
-        CategoryId: entry.CategoryId,
-        quantity: entry.quantity,
-      },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${this.getCookie('token')}`,
-          }
-        });
-    });
-
-    Promise.all(requests)
-      .then((responses) => {
-        const extractedData = this.transformData(responses.map((response: any) => response.data)) 
-
-        axios.post(`${this.loaderService.baseUrl}/store_log`, { log: JSON.stringify(extractedData), type: 'store' },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${this.getCookie('token')}`,
-            }
-          }
-        )
-          .then(response => {
-            this.storeLog = JSON.stringify(extractedData)
-            this.isReceipt = true;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-
-
-        this.resetForm();
-        this.isAddItemsToStock = false;
-        this.getStores()
-      })
-      .catch((error) => {
-        console.error('Error submitting entries:', error);
-      });
-  }
-
   resetForm() {
     this.date = '';
     this.selectedStore = null;
     this.stockEntires = [];
   }
-
 
   getCookie(cname: string): string {
     let name = cname + '=';
@@ -491,10 +569,9 @@ export class StoreComponent {
   }
 
   transformData(input:any) {
-    console.log(input);
     return {
       date:input[0].data.date,
-      recipientId: input[0].data.recipientStore?.id || null,
+      RecipientId: input[0].data.recipientStore?.id || null,
       soreId: input[0].data.storeId.UserId,
       store: {
         location: input[0].data.storeId.location, 

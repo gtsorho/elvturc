@@ -7,12 +7,14 @@ const schema = {
     create: Joi.object({
         log: Joi.string().required(),
         type: Joi.string().required(),
+        title: Joi.string().required(),
     }),
 
     update: Joi.object({
         id:Joi.number(),
         log: Joi.string(),
         type: Joi.string(),
+        title: Joi.string(),
         UserId: Joi.number(),
     })
 };

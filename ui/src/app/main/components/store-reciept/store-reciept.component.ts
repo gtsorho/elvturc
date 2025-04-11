@@ -20,6 +20,8 @@ export class StoreReceiptComponent {
   subTotal!: number;
   contactInfo!: { email?: string; phone: string };
   amountPaid: any;
+  title:string = "";
+  type:string = "";
 
   ngOnInit(): void {
     this.destructure();
