@@ -79,7 +79,7 @@ export default {
       const lastTransaction = await db.transaction.findOne({
         order: [['createdAt', 'DESC']],
       });
-      res.status(200).json({active:accounts, balance:lastTransaction.balance ?? accounts.openingBalance});
+      res.status(200).json({active:accounts, balance:lastTransaction?.balance ?? accounts.openingBalance});
     } catch (err: any) {
       res.status(500).json({ error: 'Internal Server Error', details: err.message });
     }
