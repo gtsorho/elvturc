@@ -32,6 +32,7 @@ services:
       - "3307:3306"
     environment:
       MYSQL_ROOT_PASSWORD: "numlock11"
+      MYSQL_DATABASE: "elvturc_db"
     volumes:
       - ./dbSource:/var/lib/mysql    # Bind Mount (Uncomment to use)
   
