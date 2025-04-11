@@ -1,8 +1,8 @@
 import { Injectable, NgZone  } from '@angular/core';
-import { BehaviorSubject,  interval, of } from 'rxjs';
+import { BehaviorSubject, interval, catchError, of, switchMap, startWith, map } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map } from 'rxjs/operators';
+// import { catchError, map } from 'rxjs/operators';
 import { jwtDecode } from "jwt-decode";
 
 
@@ -16,40 +16,51 @@ export class LoaderService {
   private darkMode = new BehaviorSubject<boolean>(true); 
   isDarkMode$ = this.darkMode.asObservable();
 
-  private onlineStatus = new BehaviorSubject<boolean>(navigator.onLine);
+  private onlineStatus = new BehaviorSubject<boolean>(false);
   public isOnline$ = this.onlineStatus.asObservable();
 
-  private checkInterval = 30000; // 30 seconds
-  private pingUrl = 'https://clients3.google.com/generate_204'; // reliable Google URL with 204 response
-
   constructor(private http: HttpClient, private ngZone: NgZone) {
-    // Native browser online/offline events
-    window.addEventListener('online', () => this.setOnlineStatus(true));
-    window.addEventListener('offline', () => this.setOnlineStatus(false));
+    // Initial check
+    this.checkConnection();
 
-    // Polling for real connectivity
-    this.startPolling();
-  }
+    // Listen to browser online/offline events
+    window.addEventListener('online', () => {
+      this.ngZone.run(() => this.onlineStatus.next(true));
+    });
 
-  private startPolling() {
-    interval(this.checkInterval).subscribe(() => {
-      this.http.get(this.pingUrl, { responseType: 'text' }).pipe(
-        map(() => true),
-        catchError(() => of(false))
-      ).subscribe(isOnline => {
-        this.setOnlineStatus(isOnline);
+    window.addEventListener('offline', () => {
+      this.ngZone.run(() => this.onlineStatus.next(false));
+    });
+
+    // Start periodic check every 30s
+    this.ngZone.runOutsideAngular(() => {
+      interval(30000).pipe(
+        startWith(0), // triggers immediately
+        switchMap(() => this.checkPing())
+      ).subscribe(status => {
+        this.ngZone.run(() => this.onlineStatus.next(status));
       });
     });
-  }
-
-  private setOnlineStatus(status: boolean) {
-    this.ngZone.run(() => this.onlineStatus.next(status));
   }
 
   public get currentStatus(): boolean {
     return this.onlineStatus.value;
   }
 
+  private checkConnection() {
+    this.checkPing().subscribe(status => {
+      this.onlineStatus.next(status);
+    });
+  }
+
+  private checkPing() {
+    return this.http.get('https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png', {
+      responseType: 'blob'
+    }).pipe(
+      map(() => true),
+      catchError(() => of(false))
+    );
+  }
 
   setDarkMode(isDark: boolean): void {
     this.darkMode.next(isDark);

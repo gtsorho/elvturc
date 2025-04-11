@@ -22,7 +22,9 @@ export class AppComponent {
     this.checkTokenExpiration()
     this.setIntervalCheckToken()
 
-    this.loaderService.isOnline$.subscribe(status => this.isOnline = status);
+    this.loaderService.isOnline$.subscribe(status => {
+      console.log('Connected:', status);
+      this.isOnline = status});
   }
 
 
