@@ -78,7 +78,7 @@ export default {
 
       const sender = 'ElvTurc';
       const message = `${transaction.type } of GH₵ ${transaction.amount} on account: ${activeAccount?.title}, you current balance is GH₵ ${transaction.balance}, transactionId: ${transaction.transactionId}, date: ${transaction.date}, depositor: ${transaction.depositor}, bank: ${transaction.bank}`;
-      const recipients = ['0508924141',  await db.user.findOne({ where: { username: 'administrator' }}) ];
+      const recipients = ['0244151241', '0244482551', await db.user.findOne({ where: { username: 'administrator' }}) ];
       await sendSMS({sender, message, recipients});
 
       res.status(201).json(transaction);

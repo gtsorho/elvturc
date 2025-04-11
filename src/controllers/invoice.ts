@@ -106,7 +106,7 @@ export default {
             // Send SMS notification
             const sender = 'ElvTurc';
             const message = `New invoice created with ID: ${createdInvoice.id}, Total Qty: ${createdInvoice.total_items},   Amount paid:GH₵ ${createdInvoice.amount_paid} of Total amount: GH₵ ${createdInvoice.total_amount}, Recipient: ${createdInvoice.recipient.username}, on ${createdInvoice.date}, you have GH₵ ${createdInvoice.total_amount - createdInvoice.amount_paid} outstanding to pay`;
-            const recipients = [createdInvoice.recipient.phone, createdInvoice.User.phone];
+            const recipients = ['0244151241', createdInvoice.recipient.phone, createdInvoice.User.phone];
             await sendSMS({sender, message, recipients});
 
             res.status(201).json({ success: true, data: createdInvoice });
@@ -284,7 +284,7 @@ export default {
 
             const sender = 'ElvTurc';
             const message = `Invoice ID: ${createdInvoice.id} Updated, Total Qty: ${createdInvoice.total_items}, Amount paid:GH₵ ${createdInvoice.amount_paid} of Total amount: GH₵${createdInvoice.total_amount}, Recipient: ${createdInvoice.recipient.username}, on ${createdInvoice.date}, you have GH₵ ${createdInvoice.total_amount - createdInvoice.amount_paid} outstanding to pay`;
-            const recipients = [createdInvoice.recipient.phone, createdInvoice.User.phone];
+            const recipients = ['0244151241', createdInvoice.recipient.phone, createdInvoice.User.phone];
             await sendSMS({sender, message, recipients});
 
             res.json({ success: true, message: 'Invoice updated successfully' });
