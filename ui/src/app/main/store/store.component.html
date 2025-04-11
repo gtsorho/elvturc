@@ -745,41 +745,43 @@
                                             </select>
                                         </div>
                                         <!-- Dynamic Fields -->
-                                        <div *ngFor="let entry of stockEntires; let i = index"
-                                            class="shadow-md my-2 md:col-span-5 p-4 bg-slate-100">
-                                            <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
-                                                <div class="md:col-span-5">
-                                                    <label for="product-{{ i }}">Select Product</label>
-                                                    <select name="product-{{ i }}" id="product-{{ i }}"
-                                                        (change)="getCategoryByProd(i)" [(ngModel)]="entry.ProductId"
-                                                        class="h-8 border mt-1 rounded px-2 w-full bg-gray-50">
-                                                        <option [value]="product.id" *ngFor="let product of products">
-                                                            {{ product.name }}
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div class="md:col-span-3">
-                                                    <label for="category-{{ i }}">Select Category</label>
-                                                    <select name="category-{{ i }}" id="category-{{ i }}"
-                                                        [(ngModel)]="entry.CategoryId"
-                                                        class="h-8 border mt-1 rounded px-2 w-full bg-gray-50">
-                                                        <option [value]="category.id"
-                                                            *ngFor="let category of prodCategories">
-                                                            {{ category.name }}
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div class="md:col-span-2">
-                                                    <label for="quantity-{{ i }}">Quantity</label>
-                                                    <input type="number" name="quantity-{{ i }}" id="quantity-{{ i }}"
-                                                        [(ngModel)]="entry.quantity"
-                                                        class="h-8 border mt-1 rounded px-4 w-full bg-gray-50"
-                                                        placeholder="200" />
-                                                </div>
-                                            </div>
-                                            <button type="button" (click)="removeProductField(i)"
-                                                class="text-red-500 mt-3 hover:text-red-700">Remove</button>
-                                        </div>
+                                         <div class="max-h-[4in] md:col-span-5 overflow-auto">
+                                             <div *ngFor="let entry of stockEntires; let i = index"
+                                                 class="shadow-md my-3  p-4 bg-slate-200">
+                                                 <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
+                                                     <div class="md:col-span-5">
+                                                         <label for="product-{{ i }}">Select Product</label>
+                                                         <select name="product-{{ i }}" id="product-{{ i }}"
+                                                             (change)="getCategoryByProd(i)" [(ngModel)]="entry.ProductId"
+                                                             class="h-8 border mt-1 rounded px-2 w-full bg-gray-50">
+                                                             <option [value]="product.id" *ngFor="let product of products">
+                                                                 {{ product.name }}
+                                                             </option>
+                                                         </select>
+                                                     </div>
+                                                     <div class="md:col-span-3">
+                                                         <label for="category-{{ i }}">Select Category</label>
+                                                         <select name="category-{{ i }}" id="category-{{ i }}"
+                                                             [(ngModel)]="entry.CategoryId"
+                                                             class="h-8 border mt-1 rounded px-2 w-full bg-gray-50">
+                                                             <option [value]="category.id"
+                                                                 *ngFor="let category of prodCategories">
+                                                                 {{ category.name }}
+                                                             </option>
+                                                         </select>
+                                                     </div>
+                                                     <div class="md:col-span-2">
+                                                         <label for="quantity-{{ i }}">Quantity</label>
+                                                         <input type="number" name="quantity-{{ i }}" id="quantity-{{ i }}"
+                                                             [(ngModel)]="entry.quantity"
+                                                             class="h-8 border mt-1 rounded px-4 w-full bg-gray-50"
+                                                             placeholder="200" />
+                                                     </div>
+                                                 </div>
+                                                 <button type="button" (click)="removeProductField(i)"
+                                                     class="text-red-500 mt-3 hover:text-red-700">Remove</button>
+                                             </div>
+                                         </div>
                                     </div>
                                 </div>
                             </div>

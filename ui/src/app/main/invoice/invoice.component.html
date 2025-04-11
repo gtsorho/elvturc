@@ -213,27 +213,29 @@
                                                 </option>
                                             </select>
                                         </div>
-                                        <div *ngFor="let entry of stockEntires; let i = index" class="shadow-md my-2 md:col-span-5 p-4 bg-slate-100">
-                                            <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
-                                                <div class="md:col-span-3">
-                                                    <label for="product-{{ i }}">Select Product <span class="text-red-600 text-3xl">*</span></label>
-                                                    <select name="product-{{ i }}" id="product-{{ i }}" [(ngModel)]="entry.itemId" required
-                                                        class="h-8 border mt-1 rounded px-2 w-full bg-gray-50">
-                                                        <option [value]="item.id" *ngFor="let item of items">
-                                                            <span class="font-semibold px-3">{{ item.Product.name }}</span> - 
-                                                            <span class="font-normal px-1">{{ item.Categories[0].name }}</span> :
-                                                            <span class="bg-red-500 text-white">({{ item.quantity }}pcs)</span>
-                                                        </option>
-                                                    </select>
+                                        <div class="max-h-[4in] md:col-span-5 overflow-auto">
+                                            <div *ngFor="let entry of stockEntires; let i = index" class="shadow-md my-2 p-4 bg-slate-100 ">
+                                                <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
+                                                    <div class="md:col-span-3">
+                                                        <label for="product-{{ i }}">Select Product <span class="text-red-600 text-3xl">*</span></label>
+                                                        <select name="product-{{ i }}" id="product-{{ i }}" [(ngModel)]="entry.itemId" required
+                                                            class="h-8 border mt-1 rounded px-2 w-full bg-gray-50">
+                                                            <option [value]="item.id" *ngFor="let item of items">
+                                                                <span class="font-semibold px-3">{{ item.Product.name }}</span> - 
+                                                                <span class="font-normal px-1">{{ item.Categories[0].name }}</span> :
+                                                                <span class="bg-red-500 text-white">({{ item.quantity }}pcs)</span>
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="md:col-span-2">
+                                                        <label for="quantity-{{ i }}">Quantity <span class="text-red-600 text-3xl">*</span></label>
+                                                        <input type="number" name="quantity-{{ i }}" id="quantity-{{ i }}" [(ngModel)]="entry.quantity" required
+                                                            class="h-8 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="200" />
+                                                    </div>
                                                 </div>
-                                                <div class="md:col-span-2">
-                                                    <label for="quantity-{{ i }}">Quantity <span class="text-red-600 text-3xl">*</span></label>
-                                                    <input type="number" name="quantity-{{ i }}" id="quantity-{{ i }}" [(ngModel)]="entry.quantity" required
-                                                        class="h-8 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="200" />
-                                                </div>
+                                                <button type="button" (click)="removeProductField(i)"
+                                                    class="text-red-500 mt-3 hover:text-red-700">Remove</button>
                                             </div>
-                                            <button type="button" (click)="removeProductField(i)"
-                                                class="text-red-500 mt-3 hover:text-red-700">Remove</button>
                                         </div>
                                         <div class="md:col-span-5">
                                             <label for="amount_paid">Amount Paid <span class="text-red-600 text-3xl">*</span></label>
