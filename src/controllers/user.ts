@@ -35,7 +35,7 @@ export default {
                 return res.status(401).json({ message: 'Invalid credentials' });
             }
 
-            const token = jwt.sign({ username: user.username, id: user.id, role: user.role, InstitutionID: user.InstitutionId }, process.env.JWT_KEY! , { expiresIn: '1h' });
+            const token = jwt.sign({ username: user.username, id: user.id, role: user.role, InstitutionID: user.InstitutionId }, process.env.JWT_KEY! , { expiresIn: '2h' });
             res.json({ token });
         } catch (error) {
             console.error(error);
