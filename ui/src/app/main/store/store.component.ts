@@ -8,6 +8,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { StaffService } from '../staff/staff.service';
 import { StoreReceiptComponent } from '../components/store-reciept/store-reciept.component';
+import { map, Observable } from 'rxjs';
 
 interface StoreData {
   id?: number;
@@ -134,7 +135,8 @@ export class StoreComponent {
   isUpdateStock: boolean = false
   isAddTransaction: boolean = false
   shouldSubmitStockAfterTransaction = false;
-
+  stockQuantities$: { [id: string]: Observable<number> } = {};
+  
   constructor(private loaderService: LoaderService, private storeService: StoreService, private staffService: StaffService) { }
 
   ngOnInit() {
@@ -513,14 +515,25 @@ export class StoreComponent {
     });
   }
 
+getStockQuantity(id: any): Observable<number> {
+  if (!this.stockQuantities$[id]) {
+    this.stockQuantities$[id] = this.storeService.getItems(id).pipe(
+      map((data: stockData[]) => data.reduce((sum, item) => sum + item.quantity, 0))
+    );
+  }
+  return this.stockQuantities$[id];
+}
+
   addCommasToNumber(value: number | string | undefined): string {
     const num = Number(value);
     if (isNaN(num)) return '0.00'; // fallback for invalid values
     return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
+
   openModal() {
     this.isAddStore = true;
   }
+
   promptTransactionDecision() {
     this.isAddItemsToStock = false
     this.isAddTransaction = true;

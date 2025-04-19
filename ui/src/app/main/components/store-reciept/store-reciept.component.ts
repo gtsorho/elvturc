@@ -16,7 +16,7 @@ export class StoreReceiptComponent {
   date!: string;
   source!: string;
   destination!: string;
-  items: { name: string; category: string; quantity: number; total: number }[] = [];
+  items: { name: string; category: string; quantity: number; total: number,unitPrice:number }[] = [];
   subTotal!: number;
   contactInfo!: { email?: string; phone: string };
   amountPaid: any;
@@ -58,13 +58,15 @@ export class StoreReceiptComponent {
         const product = entry.Product.name;
         const category = entry.Categories[0]?.name || "Unknown";
         const quantity = entry.item_invoice.quantity;
-        const total = entry.item_invoice?.unitPrice ||entry.unitPrice * quantity;
+        const total = entry.item_invoice?.unitPrice * quantity || entry.unitPrice * quantity;
+        const unitPrice = entry.item_invoice?.unitPrice || entry.unitPrice;
 
         return {
           name: product,
           category: category,
           quantity: quantity,
-          total: total
+          total: total,
+          unitPrice: unitPrice,
         };
       });
 
